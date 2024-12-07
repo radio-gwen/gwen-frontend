@@ -93,6 +93,7 @@ body{
   font-family: var(--font-family);
 }
 
+/*/svg pattern background/*/
 body {
   margin: 0;
   background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2056.24%2063.45%22%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bfill%3A%23fff67b%3B%7D.cls-2%7Bfill%3A%23bbec89%3B%7D.cls-3%7Bfill%3A%23c3fffb%3B%7D%3C/style%3E%3C/defs%3E%3Cpolygon%20class%3D%22cls-3%22%20points%3D%220%200%200%2012.02%2030.81%2031.72%2030.81%2031.72%200%2051.42%200%2063.45%2049.61%2031.72%200%200%22/%3E%3Cpolygon%20class%3D%22cls-1%22%20points%3D%220%2039.26%2011.79%2031.72%200%2024.19%200%2039.26%22/%3E%3Cpolygon%20class%3D%22cls-2%22%20points%3D%220%2024.19%2011.79%2031.72%200%2039.26%200%2051.42%2030.81%2031.72%200%2012.02%200%2024.19%22/%3E%3Cpolygon%20class%3D%22cls-1%22%20points%3D%2256.24%2024.05%2018.75%20.07%20.11%20.07%2049.61%2031.72%200%2063.45%2018.64%2063.45%2056.24%2039.4%2056.24%2024.05%22/%3E%3Cpolygon%20class%3D%22cls-2%22%20points%3D%2256.24%2011.88%2037.77%20.07%2018.75%20.07%2056.24%2024.05%2056.24%2011.88%22/%3E%3Cpolygon%20class%3D%22cls-2%22%20points%3D%2256.24%2051.56%2056.24%2039.4%2018.64%2063.45%2037.66%2063.45%2037.68%2063.43%2037.67%2063.43%2056.24%2051.56%22/%3E%3Cpolygon%20class%3D%22cls-3%22%20points%3D%2256.24%20.07%2037.77%20.07%2056.24%2011.88%2056.24%20.07%22/%3E%3Cpolygon%20class%3D%22cls-3%22%20points%3D%2256.24%2051.56%2037.68%2063.43%2037.66%2063.45%2056.24%2063.45%2056.24%2051.56%22/%3E%3C/svg%3E');
@@ -122,6 +123,12 @@ a :hover{
   flex-direction: column;
 }
 
+@media (max-width: 768px){
+  .global-container{
+    margin: 0px;
+  }
+}
+
 nav{
   background-color: var(--primary-color);
   border: var(--line) var(--black) solid;
@@ -138,9 +145,43 @@ nav ul li{
   padding: var(--spacing-medium) var(--spacing-large);
 }
 
+@media (max-width: 768px) {
+  nav {
+    display: none;
+    height: -webkit-fill-available;
+    text-align: center;
+    background-color: var(--color-one);
+    position: absolute;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 5;
+    transform: translate(0px, 46px);
+    border: none;
+  }
+
+  nav.active {
+    display: flex;
+    justify-content: center;
+    background-color: var(--primary-color);
+    opacity: 1;
+  }
+
+  nav ul {
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    width: 100%;
+  }
+}
+
+
+
 .block{
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background-color: var(--black);
   color: var(--white);
   padding: var(--spacing-small) var(--spacing-large);
