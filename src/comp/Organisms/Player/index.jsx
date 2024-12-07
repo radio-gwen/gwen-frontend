@@ -6,11 +6,13 @@ function Player (){
     const [isPlaying, setIsPlaying] = useState(false)
 
     useEffect( () => {
-        isPlaying && console.log('radio is playing')
+        const audio = document.querySelector('#stream')
+        isPlaying ? audio.play() : audio.pause()
     }, [isPlaying])
 
     return(
         <div className='block'>
+            <audio src="http://stream.radiojar.com/h6eddm4h9quvv" id="stream"></audio>
             < BtnPlayPause 
             content = 'Ascolta la diretta!'
             isPlaying = {isPlaying}
