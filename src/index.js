@@ -9,6 +9,7 @@ import Events from './pages/Events'
 import About from './pages/About'
 import Header from './comp/Organisms/Header'
 import Player from './comp/Organisms/Player'
+import Banner from './comp/Organisms/Banner'
 import Footer from './comp/Organisms/Footer'
 import Error from './comp/Organisms/Error'
 import reportWebVitals from './reportWebVitals'
@@ -39,6 +40,7 @@ const App = () => {
     <div className='global-container'>
       <Header isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} isMobile={isMobile} />
       <Player isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} isMobile={isMobile}/>
+      <Banner />
       <Routes>
         <Route path='/' element={<Home />}/>
         <Route path='/transmissions' element={<Transmissions />}/>
