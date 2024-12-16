@@ -1,9 +1,16 @@
 import { Link } from "react-router-dom";
 
-function Header({ isNavOpen, isMobile }) {
+function Header({ isNavOpen, setIsNavOpen, isMobile }) {
+
+  const handleNavClick = () => {
+    if (isNavOpen && isMobile) {
+      setIsNavOpen(false); // Close the nav menu
+    }
+  }
+
   return (
     <nav className={isNavOpen && isMobile ? "active" : ""}>
-      <ul>
+      <ul onClick={handleNavClick}>
         <Link to="/transmissions">
           <li key="transmissions">Transmissions</li>
         </Link>

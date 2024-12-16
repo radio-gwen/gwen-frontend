@@ -34,7 +34,7 @@ const Banner = () => {
             defaultImage: '//www.radiojar.com/img/sample_images/Radio_Stations_Avatar_BLUE.png',
             autoplay: false,
           });
-          console.log('RadioJar player initialized');
+      
 
           // Event listener for track load event
           const trackLoadListener = (event, data) => {
@@ -71,17 +71,23 @@ const Banner = () => {
   }, []); // Empty dependency array to run this effect only once when the component mounts
 
   return (
-    <section id="playing-now" className="color-one-bg">
+    <div id="playing-now">
       <p className="scrolling-text">
         <span id="trackInfo" className="rjp-info">
           {trackInfo.artist && trackInfo.title
-            ? `Playing now: ${trackInfo.artist} - "${trackInfo.title}"`
+            ? ` 🐰 Playing now: ${trackInfo.artist} - "${trackInfo.title}"`
+            : 'Loading...'}
+        </span>
+        <span id="trackInfo" className="rjp-info">
+          {trackInfo.artist && trackInfo.title
+            ? ` 🐰 Playing now: ${trackInfo.artist} - "${trackInfo.title}"`
             : 'Loading...'}
         </span>
       </p>
-
-      {/* Player and Cover */}
-      <div id="rj-player" style={{ display: trackInfo.artist ? 'block' : 'none' }}>
+            
+      {/* Player and Cover (NO DISPLAY!)*/}
+  
+      <div id="rj-player" style={{ display:'none' }}>
         <div className="player-v3 player-medium">
           <div id="rj-cover">
             {trackInfo.cover ? (
@@ -99,7 +105,6 @@ const Banner = () => {
             <div className="rjp-player-container">
               <div id="rjp-radiojar-player"></div>
               <div id="rj-player-controls" className="rj-player-controls">
-                {/* Control Buttons (Play, Pause, etc.) */}
                 <div className="jp-gui jp-interface">
                   <div className="jp-controls">
                     <button className="jp-play" title="Play">
@@ -134,8 +139,10 @@ const Banner = () => {
         </div>
       </div>
 
-      <div className="line"></div>
-    </section>
+      {/* END Player and Cover (NO DISPLAY!)*/}
+
+      
+    </div>
   );
 };
 
