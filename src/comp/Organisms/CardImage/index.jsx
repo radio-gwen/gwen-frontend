@@ -1,6 +1,7 @@
 import CardContent from "../../Mollecules/CardContent"
+import ImageIdBox from "../../Atoms/ImageIdBox"
 
-const Card = ( {title, desc, text, imgSrc, imgDesc, btnContent, url} ) => {
+const CardImage = ( {title, desc, text, imgSrc, imgDesc, btnContent, url} ) => {
     return(
         <div className='card'>
             <CardContent 
@@ -9,9 +10,12 @@ const Card = ( {title, desc, text, imgSrc, imgDesc, btnContent, url} ) => {
             text = {text}
             btnContent = {btnContent}
             url = {url}
-            />            
+            />
+            
+            <ImageIdBox src={imgSrc} alt={imgDesc}/>
+            
         </div>
     )
 }
 
-export default Card
+export default CardImage

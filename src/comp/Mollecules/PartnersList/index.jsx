@@ -3,7 +3,7 @@ import partners from "../../../data/partnersList"
 
 const Partnerslist = () => {
     return(
-        <div className="flex-horiz" style={{gap: 'var(--spacing-very-large)', marginTop: 'var(--spacing-very-large)', marginBottom: 'var(--spacing-very-large)'}}>
+        <div className="prtners-list" >
 
             {partners.map( partner =>
                 <PartnersLogo 

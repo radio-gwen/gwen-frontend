@@ -380,6 +380,12 @@ h2{
   background-color: var(--white);
 }
 
+@media (max-width: 768px) {
+  .card{
+    flex-direction: column-reverse;
+  }
+}
+
 .card-toogle{
   display: flex;
   align-items: flex-start;
@@ -387,6 +393,20 @@ h2{
   background-color: var(--white);
   padding: var(--spacing-small);
   cursor: pointer;
+}
+
+.prtners-list{
+  display: flex;
+  gap: var(--spacing-very-large);
+  align-items: center;
+  gap: var(--spacing-very-large);
+  margin: var(--spacing-very-large) 0px;
+}
+
+@media (max-width: 768px) {
+  .prtners-list{
+    flex-direction: column;
+  }
 }
 
 /*/TRANSFORM/*/

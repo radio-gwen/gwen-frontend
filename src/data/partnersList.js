@@ -1,5 +1,3 @@
-
-
 const partners = [
     {
         id: 1,

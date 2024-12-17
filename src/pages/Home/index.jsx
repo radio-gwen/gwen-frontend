@@ -2,7 +2,7 @@ import Section from "../../comp/Templates/Section";
 import H1 from "../../comp/Atoms/H1";
 import BlockCenter from "../../comp/Organisms/BlockCenter";
 import CardContent from "../../comp/Mollecules/CardContent";
-import Card from "../../comp/Organisms/Card";
+import CardImage from "../../comp/Organisms/CardImage";
 import CardToogle from "../../comp/Organisms/CardToogle";
 import Newsletter from "../../comp/Mollecules/Newsletter";
 import Contacts from "../../comp/Templates/Contats";
@@ -17,7 +17,7 @@ function Home() {
         <div className='line'></div>
         {transmissionsList.map( transmission => 
           <div key = {`div-${transmission.id}`}>
-            <Card 
+            <CardImage 
               key = {transmission.id}
               title = {transmission.title}
               desc = {transmission.desc}
