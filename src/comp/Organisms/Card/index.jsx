@@ -1,14 +1,16 @@
 import CardContent from "../../Mollecules/CardContent"
 
-const Card = ( {title, desc, imgSrc, imgDesc, btnContent} ) => {
+const Card = ( {title, desc, text, imgSrc, imgDesc, btnContent, url} ) => {
     return(
         <div className='card'>
             <CardContent 
-            title={title} 
-            desc ={desc}
-            btnContent= {btnContent}
+            title = {title} 
+            desc = {desc}
+            text = {text}
+            btnContent = {btnContent}
+            url = {url}
             />
-            <img src={imgSrc} alt={imgDesc} />
+            
         </div>
     )
 }

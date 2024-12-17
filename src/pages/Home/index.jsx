@@ -22,6 +22,9 @@ function Home() {
               title = {transmission.title}
               desc = {transmission.desc}
               btnContent = 'Vai!'
+              imgSrc={transmission.image}
+              imgDesc={transmission.imgDesc}
+              url = {`/transmission/${transmission.id}`}
             />
             <div key = {`line-${transmission.id}`} className='line'></div>
           </div>

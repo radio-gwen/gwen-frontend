@@ -374,7 +374,8 @@ h2{
 .card{
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  flex-direction: row;
   width: 100%;
   background-color: var(--white);
 }
