@@ -180,6 +180,10 @@ a :hover{
   max-width: 1200px;
 }
 
+.section-content{
+  padding: var(--spacing-very-large);
+}
+
 @media (max-width: 768px){
   .global-container{
     margin: 0px;

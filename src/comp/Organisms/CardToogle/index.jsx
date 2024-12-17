@@ -8,7 +8,6 @@ const CardToogle = ({children, title, desc, btnContent, id}) => {
 
     const toogle = () => {
         setIsOpen(!isOpen)
-        console.log(isOpen)
     }
 
     return(

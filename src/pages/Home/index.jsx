@@ -5,7 +5,8 @@ import CardContent from "../../comp/Mollecules/CardContent";
 import Card from "../../comp/Organisms/Card";
 import CardToogle from "../../comp/Organisms/CardToogle";
 import Newsletter from "../../comp/Mollecules/Newsletter";
-import transmissionsList from "../../data/data";
+import Contacts from "../../comp/Templates/Contats";
+import transmissionsList from "../../data/transmissionsList";
 import eventsList from "../../data/eventsList";
 
 function Home() {
@@ -53,6 +54,8 @@ function Home() {
         </BlockCenter>
         <div className='line'></div>
       </Section>
+
+      <Contacts />
 
     </div>
   );
