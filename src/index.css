@@ -148,6 +148,7 @@ a :hover{
   max-height: 10000px;
   overflow: hidden;
   transition: opacity 0.5s ease-out 0.3s, visibility 0.5s ease-out 0.3s, max-height 10s ease-out;
+  width: -webkit-fill-available;
 }
 
 .closed{
@@ -163,6 +164,12 @@ a :hover{
   display: flex;
   gap: var(--spacing-small);
   align-items: center;
+  width: -webkit-fill-available;
+  padding: var(--spacing-small);
+}
+
+.flex-horiz:hover{
+  background-color: var(--cta-color);
 }
 
 .flex-vert-center{
@@ -369,6 +376,14 @@ h2{
   padding: var(--spacing-large);
 }
 
+.player{
+  display: flex;
+  border: var(--line) var(--black) solid;
+  border-radius: var(--border-radius);
+  padding: var(--spacing-small) var(--spacing-large);
+  margin: var(--spacing-small) var(--spacing-large);
+}
+
 /*/ORGANISMS/*/
 
 .card{
@@ -391,7 +406,6 @@ h2{
   align-items: flex-start;
   flex-direction: column;
   background-color: var(--white);
-  padding: var(--spacing-small);
   cursor: pointer;
 }
 

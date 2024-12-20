@@ -47,7 +47,7 @@ const App = () => {
         <Route path='/transmissions' element={<Transmissions />}/>
         <Route path='/events' element={<Events />}/>
         <Route path='/about' element={<About />}/>
-        <Route path='/transmission/:id' element={<Transmission />}/>
+        <Route path='/transmission/:transId' element={<Transmission />}/>
         <Route path='*' element={<Error />} />
       </Routes>
       <Footer />

@@ -1,4 +1,4 @@
-function BtnPlayPause ({onClick, content, isPlaying}){
+const BtnPlayPause = ({onClick, content, isPlaying}) => {
 
     return(
         <div className='btn-play-pause' onClick={onClick}>
