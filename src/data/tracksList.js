@@ -2,7 +2,7 @@ const tracksList = [
     {
         id: 1,
         type: 'event',
-        mainId: 1235, 
+        mainId: 1234, 
         name: 'track 01',
         date: 'date',
         file: require('../assets/audio/jingle.mp3')

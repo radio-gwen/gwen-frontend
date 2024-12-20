@@ -19,30 +19,45 @@ const Transmission = () => {
 
     const transmission = transmissionsList.find((t) => t.id === Number(transId))
 
-
-
     if (!transmission) {
         console.log('transmission not found!')
     }
 
+    const tracks = tracksList.filter( (t) => t.mainId === 1234 && t.type === 'trans' )
+
+    if (!tracks) {
+        console.log('tracks not found!')
+    }
+
     return(
        <Section>
-        <Carousel image = {transmission.image} width= '300px'/>
-        <Card
-        title = {transmission.title}
-        desc = {transmission.desc}
-        text = {transmission.text}
-        btnContent = 'Back'
-        url = '/'
-        />
+
+            <Carousel image = {transmission.image} width= '300px'/>
+
+            <Card
+            title = {transmission.title}
+            desc = {transmission.desc}
+            text = {transmission.text}
+            btnContent = 'Back'
+            url = '/'
+            />
+
+            {tracks.map( (track) =>  
+            
+                <div>
+                    <div className='line'></div>
+                    <Toogle title={track.name} id={`track-${track.id}`}>
+                        <Player />
+                    </Toogle>
+                </div>
+
+            )}
+
+            <div className="line"></div>
 
 
 
-        <div className="line"></div>
-        <Toogle title='clique-moi!' id='123'>
-            <Player />
-        </Toogle>
-       </Section>
+        </Section>
     )
 }
 
