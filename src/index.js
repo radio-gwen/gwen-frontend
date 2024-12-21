@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import { useState, useEffect } from 'react'
+
 import Home from './pages/Home'
 import Transmissions from './pages/Transmissions'
 import Events from './pages/Events'
@@ -38,20 +39,22 @@ const App = () => {
 
   return(
     <Router>
-    <div className='global-container'>
-      <Header isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} isMobile={isMobile} />
-      <Player isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} isMobile={isMobile}/>
-      <Banner />
-      <Routes>
-        <Route path='/' element={<Home />}/>
-        <Route path='/transmissions' element={<Transmissions />}/>
-        <Route path='/events' element={<Events />}/>
-        <Route path='/about' element={<About />}/>
-        <Route path='/transmission/:transId' element={<Transmission />}/>
-        <Route path='*' element={<Error />} />
-      </Routes>
-      <Footer />
-    </div>
+
+        <div className='global-container'>
+          <Header isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} isMobile={isMobile} />
+          <Player isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} isMobile={isMobile}/>
+          <Banner />
+          <Routes>
+            <Route path='/' element={<Home />}/>
+            <Route path='/transmissions' element={<Transmissions />}/>
+            <Route path='/events' element={<Events />}/>
+            <Route path='/about' element={<About />}/>
+            <Route path='/transmission/:transId' element={<Transmission />}/>
+            <Route path='*' element={<Error />} />
+          </Routes>
+          <Footer />
+        </div>
+
     </Router>
   )
 }

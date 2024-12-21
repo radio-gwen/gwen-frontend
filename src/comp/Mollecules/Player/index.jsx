@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
 import BtnPlayPause from "../../Atoms/BtnPlayPause"
 
 
@@ -6,8 +6,10 @@ import BtnPlayPause from "../../Atoms/BtnPlayPause"
 const Player = ({id, track, desc}) => {
 
     const [isPlaying, setIsPlaying] = useState(false)
+    const audioTrack = useRef(new Audio(track))
 
     const audioPlayer = () => {
+        isPlaying ? audioTrack.current.pause() : audioTrack.current.play()
         setIsPlaying(!isPlaying)
     }
 

@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom"
 import Section from "../../comp/Templates/Section"
-
 import Carousel from "../../comp/Mollecules/Carousel"
 import Card from "../../comp/Organisms/Card"
 import Toogle from "../../comp/Organisms/Toogle"
@@ -47,7 +46,7 @@ const Transmission = () => {
                 <div>
                     <div className='line'></div>
                     <Toogle title={track.name} id={`track-${track.id}`}>
-                        <Player />
+                        <Player track = {track.file}/>
                     </Toogle>
                 </div>
 
