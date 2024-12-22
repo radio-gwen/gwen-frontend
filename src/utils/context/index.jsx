@@ -7,7 +7,7 @@ export const AudioProvider = ({children}) => {
     const [isPlaying, setIsPlaying] = useState(false)
 
     const toggleIsPlaying = () => {
-        setIsPlaying(isPlaying)
+        setIsPlaying(!isPlaying)
     }
 
     return(
