@@ -333,6 +333,7 @@ h2{
 }
 
 .btn-cta{
+  all: unset;
   display: flex;
   align-items: center;
   width: fit-content;
@@ -368,6 +369,25 @@ h2{
 }
 
 /*/MOLLECULS/*/
+form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-small)
+}
+
+form input {
+  border: solid var(--line) var(--black);
+  padding: var(--spacing-small) var(--spacing-large);
+  font-family: inherit;
+  width: -webkit-fill-available;
+}
+
+form input:focus{
+  background-color: var(--secondary-color);
+  outline: none;
+}
+
 .card-content{
   display: flex;
   flex-direction: column;

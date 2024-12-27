@@ -1,11 +1,11 @@
-import BtnCTA from "../../Atoms/BtnCTA"
+import TestForm from "../../Atoms/TestForm"
 
 const Newsletter = () => {
+
     return(
         <div className="flex-vert-center">
             <h3>Newsletter</h3>
-            <p>input</p>
-            <BtnCTA btnContent='Invia!'/>
+            <TestForm />            
         </div>
     )
 }

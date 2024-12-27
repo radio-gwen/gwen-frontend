@@ -4,7 +4,7 @@ import BlockCenter from "../../comp/Organisms/BlockCenter";
 import CardContent from "../../comp/Mollecules/CardContent";
 import CardImage from "../../comp/Organisms/CardImage";
 import CardToogle from "../../comp/Organisms/CardToogle";
-import Newsletter from "../../comp/Mollecules/Newsletter";
+import Newsletter from "../../comp/Organisms/Newsletter";
 import Contacts from "../../comp/Templates/Contats";
 import transmissionsList from "../../data/transmissionsList";
 import eventsList from "../../data/eventsList";

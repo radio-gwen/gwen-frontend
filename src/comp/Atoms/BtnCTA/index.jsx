@@ -1,8 +1,8 @@
-const BtnCTA = ({btnContent}) => {
+const BtnCTA = ({btnContent, onSubmit}) => {
     return(
-        <div className='btn-cta'>
+        <button className='btn-cta' onSubmit={onSubmit}>
             {btnContent}
-        </div>
+        </button>
     )
 }
 
