@@ -1,3 +1,5 @@
+import { useFetch } from "../../utils/hooks/useFetch";
+
 import Section from "../../comp/Templates/Section";
 import H1 from "../../comp/Atoms/H1";
 import BlockCenter from "../../comp/Organisms/BlockCenter";
@@ -6,16 +8,26 @@ import CardImage from "../../comp/Organisms/CardImage";
 import CardToogle from "../../comp/Organisms/CardToogle";
 import Newsletter from "../../comp/Organisms/Newsletter";
 import Contacts from "../../comp/Templates/Contats";
-import transmissionsList from "../../data/transmissionsList";
-import eventsList from "../../data/eventsList";
 
 function Home() {
+
+  const {data: transmissionsData, isLoading: isTransLoading} = useFetch(`http://localhost:8000/transmissions`)
+  const transmissionsList = transmissionsData?.transmissionsList || [];
+
+  const {data: eventsData, isLoading: isEventsLoading} = useFetch(`http://localhost:8000/events`)
+  const eventsList = eventsData?.eventsList || [];
+
+  if (isTransLoading || isEventsLoading) {
+    return <div>Loading...</div>; // Add a loading indicator
+}
+
   return (
     <div>
       <Section>
         <H1 content='Trasmissioni'/>
         <div className='line'></div>
-        {transmissionsList.map( transmission => 
+
+         {transmissionsList.map( transmission => 
           <div key = {`div-${transmission.id}`}>
             <CardImage 
               key = {transmission.id}
@@ -28,7 +40,8 @@ function Home() {
             />
             <div key = {`line-${transmission.id}`} className='line'></div>
           </div>
-        )}
+        )} 
+
       </Section>        
 
       <Section>
