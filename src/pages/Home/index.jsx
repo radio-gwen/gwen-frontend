@@ -57,6 +57,7 @@ function Home() {
               <CardContent 
               desc={event.desc}
               btnContent={'Vai'}
+              url={`/event/${event.id}`}
               />
             </CardToogle>
             <div className='line'></div>
