@@ -119,11 +119,6 @@ a{
   text-decoration: none;
 }
 
-a :hover{
-  background-color: var(--secondary-color);
-}
-
-
 /*/BLOCKS/*/
 
 .background-primary{
