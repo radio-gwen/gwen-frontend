@@ -2,12 +2,14 @@ import { useState } from "react";
 import BtnCTA from "../BtnCTA";
 
 const TestForm = () => {
+
     const [inputValue, setInputValue] = useState('');
 
     async function handleSubmit(e) {
+
         e.preventDefault();
 
-        const formData = { id: '3', name: 'MyName', mail: e.target["my_input"].value };
+        const formData = { mail: e.target["my_input"].value };
 
         const response = await fetch('http://localhost:8000/users', {
             method: 'POST',
