@@ -7,7 +7,7 @@ const TestForm = () => {
 
     async function handleSubmit(e) {
 
-        e.preventDefault();
+        e.preventDefault()
 
         const formData = { mail: e.target["my_input"].value };
 

@@ -384,7 +384,8 @@ form{
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-small)
+  gap: var(--spacing-small);
+  margin: var(--spacing-very-large);
 }
 
 form input {
@@ -395,6 +396,19 @@ form input {
 }
 
 form input:focus{
+  background-color: var(--secondary-color);
+  outline: none;
+}
+
+form textarea{
+  border: solid var(--line) var(--black);
+  min-width: 70%;
+  padding: var(--spacing-small) var(--spacing-large);
+  font-family: inherit;
+  width: -webkit-fill-available;
+}
+
+form textarea:focus{
   background-color: var(--secondary-color);
   outline: none;
 }

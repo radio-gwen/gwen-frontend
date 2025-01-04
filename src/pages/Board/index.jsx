@@ -1,13 +1,12 @@
 import Section from "../../comp/Templates/Section"
 import Toogle from "../../comp/Organisms/Toogle"
 import H1 from "../../comp/Atoms/H1"
+import TestForm2 from "../../comp/Atoms/TestForm2"
 
 
 const Board = () =>{
     return(
         <Section className='background-primary'>
-
-            
 
             <H1 content='Transmissions'/>
             <div className='line'></div>
@@ -16,12 +15,12 @@ const Board = () =>{
                 </Toogle>
                 <div className='line'></div>
                 <Toogle title='new transmission'>
+                    <TestForm2 />
                 </Toogle>
             
             <div className='line'></div>
             <H1 content='Events'/>
             <div className='line'></div>
-
 
                 <Toogle title='all events'>
                 </Toogle>
