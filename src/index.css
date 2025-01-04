@@ -172,6 +172,15 @@ a :hover{
   background-color: var(--cta-color);
 }
 
+.flex-horiz-center{
+  display: flex;
+  gap: var(--spacing-small);
+  align-items: center;
+  justify-content: center;
+  width: -webkit-fill-available;
+  padding: var(--spacing-small);
+}
+
 .flex-vert-center{
   display: flex;
   gap: var(--spacing-small);
@@ -198,11 +207,13 @@ a :hover{
 }
 
 nav{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   background-color: var(--primary-color);
   border: var(--line) var(--black) solid;
   border-radius: var(--border-radius) var(--border-radius) 0px 0px;
-  display: flex;
-  flex-direction: row-reverse;
 }
 
 nav ul{
@@ -366,6 +377,11 @@ h2{
 
 .line{
   border-top: var(--line) var(--black) solid;
+}
+
+.logo{
+  width: 70px;
+  margin-left: var(--spacing-medium)
 }
 
 /*/MOLLECULS/*/

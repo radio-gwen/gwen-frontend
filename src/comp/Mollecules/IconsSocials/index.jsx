@@ -3,7 +3,7 @@ import socialsList from "../../../data/socialsList"
 
 const IconsSocials = () => {
     return (
-        <div className="flex-horiz">
+        <div className="flex-horiz-center">
             {socialsList.map( social => 
                 <a
                 key= {social.id}
