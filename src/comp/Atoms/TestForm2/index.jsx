@@ -37,7 +37,7 @@ const TestForm2 = () => {
         }
     
         try {
-            const response = await fetch('http://localhost:8000/testtransmissions/upload', {
+            const response = await fetch('http://localhost:8000/testtransmissions', {
                 method: 'POST',
                 body: formData, // Do NOT set Content-Type manually
             });
