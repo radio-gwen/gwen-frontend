@@ -1,141 +1,200 @@
-import { useState } from "react"
-import BtnCTA from "../BtnCTA"
+import { useState } from "react";
+import BtnCTA from "../BtnCTA";
 
 const TestForm2 = () => {
-
     const [transmissionValues, setTransmissionValues] = useState({
-        title: '',
-        desc: '',
-        text: ''
-    })
+        title: "",
+        desc: "",
+        text: "",
+    });
 
-    const [image, setImage] = useState(null)
+    const [image, setImage] = useState(null);
 
-    const [trackValues, setTrackValues] = useState([{
-        title: '',
-        desc: '',
-        date: '',
-        file: ''
-    }])
+    const [trackValues, setTrackValues] = useState({
+        name: "",
+        desc: "",
+        date: "",
+        file: null,
+        mainId: "",  // Main ID (from transmission)
+        type: "trans",  // Default type
+    });
 
+    // Handle changes for transmission form
     const handleChange = (e) => {
-        const { name, value } = e.target
-        setTransmissionValues((prevValues) => ({
-            ...prevValues,
-            [name]: value
-        }))
+        const { name, value } = e.target;
+
+        if (name.startsWith("track-")) {
+            const trackField = name.replace("track-", ""); // Remove "track-" prefix
+            setTrackValues((prevValues) => ({
+                ...prevValues,
+                [trackField]: value,
+            }));
+        } else {
+            setTransmissionValues((prevValues) => ({
+                ...prevValues,
+                [name]: value,
+            }));
+        }
+    };
+
+    // Handle file change for track file upload (no longer used for testing)
+    const handleTrackFileChange = (e) => {
+        const selectedFile = e.target.files[0];
         setTrackValues((prevValues) => ({
             ...prevValues,
-            [name]: value
-        }))
-    }
+            file: selectedFile,
+        }));
+    };
 
+    // Handle image change for transmission
     const handleImageChange = (e) => {
-        const selectedImage = e.target.files[0]
-        setImage(selectedImage)
-    }
+        const selectedImage = e.target.files[0];
+        setImage(selectedImage);
+    };
 
+    // Submit both forms
     async function handleSubmit(e) {
         e.preventDefault();
-    
+
+        // Submit transmission data
         const formData = new FormData();
-        formData.append('title', transmissionValues.title);
-        formData.append('desc', transmissionValues.desc);
-        formData.append('text', transmissionValues.text);
+        formData.append("title", transmissionValues.title);
+        formData.append("desc", transmissionValues.desc);
+        formData.append("text", transmissionValues.text);
 
-        const formTrackData = new FormData();
-        formData.append('title', trackValues.title);
-        formData.append('desc', trackValues.desc);
-        formData.append('text', trackValues.date);
-    
         if (image) {
-            formData.append('image', image);
+            formData.append("image", image);
         }
-    
-        try {
 
-            // Transmission Data Submission
-            const transmissionResponse = await fetch('http://localhost:8000/testtransmissions', {
-                method: 'POST',
-                body: formData, // Do NOT set Content-Type manually
-            });
-    
+        try {
+            // Transmission Submission
+            const transmissionResponse = await fetch(
+                "http://localhost:8000/testtransmissions",
+                {
+                    method: "POST",
+                    body: formData, // No need to set Content-Type manually
+                }
+            );
+
             if (!transmissionResponse.ok) {
-                const result = await transmissionResponse.json(); // If error response has JSON
-                alert('Failed to add transmission: ' + (result.error || 'Unknown error'));
+                const result = await transmissionResponse.json();
+                alert(
+                    "Failed to add transmission: " + (result.error || "Unknown error")
+                );
                 return;
             }
-    
-            const result = await transmissionResponse.json();
-            alert('Transmission added successfully');
-            console.log(result);
 
-            // Track Data submission
-            const trackResponse = await fetch('http://localhost:8000/testtracks', {
-                method: 'POST',
-                body: formTrackData,
-            })
+            const transmissionResult = await transmissionResponse.json();
+            console.log("Transmission added successfully:", transmissionResult);
 
-            if(!trackResponse.ok) {
-                const result = await trackResponse.json()
-                alert('Failed to add track: ' + (result.error || 'Unknown error'))
-                return
-            }
+            // After successful transmission submission, set mainId for the track
+            setTrackValues((prevValues) => ({
+                ...prevValues,
+                mainId: transmissionResult.id,  // Assuming the ID of the transmission is returned
+            }));
 
-            const trackResult = await trackResponse.json()
-            alert('Tracks added successfully')
-            console.log(trackResult);
+            // Submit track data without the file for now (testing without file upload)
+            const formTrackData = new FormData();
+            formTrackData.append("name", trackValues.name);
+            formTrackData.append("desc", trackValues.desc);
+            formTrackData.append("date", trackValues.date);
+            formTrackData.append("mainId", trackValues.mainId);  // Add mainId to track
+            formTrackData.append("type", trackValues.type);  // Default type 'trans'
 
-            
+            // Do not append the file for now (testing without file)
+            // formTrackData.append("file", trackValues.file); // Comment this out for now
 
+            // Track submission (log response before parsing as JSON)
+const trackResponse = await fetch("http://localhost:8000/tracks", {
+    method: "POST",
+    body: formTrackData,
+});
 
+// Instead of calling .text() first, directly use .json()
+const trackResult = await trackResponse.json();
+console.log("Track Response JSON:", trackResult); // Log the parsed JSON response
 
+if (!trackResponse.ok) {
+    alert(
+        "Failed to add track: " + (trackResult.error || "Unknown error")
+    );
+    return;
+}
+
+console.log("Track added successfully:", trackResult);
+alert("Transmission and track added successfully!");
+
+            alert("Transmission and track added successfully!");
         } catch (err) {
-            console.error('Error:', err);
-            alert('Failed to add transmission: ' + err.message);
+            console.error("Error:", err);
+            alert("Something went wrong: " + err.message);
         }
     }
 
-    return(
+    return (
         <form onSubmit={handleSubmit}>
-            <input 
-                type='file'
+            {/* Transmission Inputs */}
+            <input
+                type="file"
                 accept=".jpg,.jpeg,.png"
                 onChange={handleImageChange}
             />
             <input
                 type="text"
-                name='title'
-                placeholder='Transmission Title'
+                name="title"
+                placeholder="Transmission Title"
                 value={transmissionValues.title}
                 onChange={handleChange}
             />
             <input
                 type="text"
                 name="desc"
-                placeholder='Transmission Description'
+                placeholder="Transmission Description"
                 value={transmissionValues.desc}
                 onChange={handleChange}
             />
-            <textarea 
-                rows="5" 
-                name="text" 
+            <textarea
+                rows="5"
+                name="text"
+                placeholder="Text Transmission"
                 value={transmissionValues.text}
-                placeholder="Text Trasmissione"
-                onChange={handleChange} >
-            </textarea>
+                onChange={handleChange}
+            ></textarea>
 
-            <input 
-                type = 'text'
-                name = 'track-title'
-                placeholder = 'track name'
-                value = {trackValues.title}
-                onCHange = {handleChange} // Write onChange function
+            {/* Track Inputs */}
+            <h3>Track</h3>
+            <input
+                type="text"
+                name="track-name"
+                placeholder="Track Name"
+                value={trackValues.name}
+                onChange={handleChange}
             />
+            <input
+                type="text"
+                name="track-desc"
+                placeholder="Track Description"
+                value={trackValues.desc}
+                onChange={handleChange}
+            />
+            <input
+                type="date"
+                name="track-date"
+                placeholder="Track Date"
+                value={trackValues.date}
+                onChange={handleChange}
+            />
+            {/* Comment out the file input for now */}
+            {/* <input
+                type="file"
+                name="track-file"
+                accept=".mp3,.wav,.flac"
+                onChange={handleTrackFileChange}
+            /> */}
 
-            <BtnCTA btnContent='Submit!' />
+            <BtnCTA btnContent="Submit!" />
         </form>
-    )
-}
+    );
+};
 
-export default TestForm2
+export default TestForm2;
