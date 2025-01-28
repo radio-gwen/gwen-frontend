@@ -37,7 +37,7 @@ const TestForm2 = () => {
         }
     };
 
-    // Handle file change for track file upload (no longer used for testing)
+    // Handle file change for track file upload
     const handleTrackFileChange = (e) => {
         const selectedFile = e.target.files[0];
         setTrackValues((prevValues) => ({
@@ -93,7 +93,7 @@ const TestForm2 = () => {
                 mainId: transmissionResult.id,  // Assuming the ID of the transmission is returned
             }));
 
-            // Submit track data without the file for now (testing without file upload)
+            // Submit track data with the file
             const formTrackData = new FormData();
             formTrackData.append("name", trackValues.name);
             formTrackData.append("desc", trackValues.desc);
@@ -101,29 +101,28 @@ const TestForm2 = () => {
             formTrackData.append("mainId", trackValues.mainId);  // Add mainId to track
             formTrackData.append("type", trackValues.type);  // Default type 'trans'
 
-            // Do not append the file for now (testing without file)
-            // formTrackData.append("file", trackValues.file); // Comment this out for now
+            // Append the track file if it exists
+            if (trackValues.file) {
+                formTrackData.append("file", trackValues.file);
+            }
 
-            // Track submission (log response before parsing as JSON)
-const trackResponse = await fetch("http://localhost:8000/tracks", {
-    method: "POST",
-    body: formTrackData,
-});
+            // Track submission
+            const trackResponse = await fetch("http://localhost:8000/tracks", {
+                method: "POST",
+                body: formTrackData,
+            });
 
-// Instead of calling .text() first, directly use .json()
-const trackResult = await trackResponse.json();
-console.log("Track Response JSON:", trackResult); // Log the parsed JSON response
+            const trackResult = await trackResponse.json();
+            console.log("Track Response JSON:", trackResult); // Log the parsed JSON response
 
-if (!trackResponse.ok) {
-    alert(
-        "Failed to add track: " + (trackResult.error || "Unknown error")
-    );
-    return;
-}
+            if (!trackResponse.ok) {
+                alert(
+                    "Failed to add track: " + (trackResult.error || "Unknown error")
+                );
+                return;
+            }
 
-console.log("Track added successfully:", trackResult);
-alert("Transmission and track added successfully!");
-
+            console.log("Track added successfully:", trackResult);
             alert("Transmission and track added successfully!");
         } catch (err) {
             console.error("Error:", err);
@@ -184,13 +183,12 @@ alert("Transmission and track added successfully!");
                 value={trackValues.date}
                 onChange={handleChange}
             />
-            {/* Comment out the file input for now */}
-            {/* <input
+            <input
                 type="file"
                 name="track-file"
                 accept=".mp3,.wav,.flac"
                 onChange={handleTrackFileChange}
-            /> */}
+            />
 
             <BtnCTA btnContent="Submit!" />
         </form>
