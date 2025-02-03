@@ -28,7 +28,6 @@ const Transmission = () => {
         return <div>Loading...</div>; // Add a loading indicator
     }
 
-    /*We look for the right object*/
     const transmission = transmissionsList.find((t) => t.id === String(transId))
 
     if (!transmission) {
@@ -40,6 +39,7 @@ const Transmission = () => {
     if (!tracks) {
         console.log('tracks not found!')
     }
+
 
     return(
        <Section>
@@ -60,6 +60,7 @@ const Transmission = () => {
                     <div className='line'></div>
                     <Toogle title={track.name} id={`track-${track.id}`}>
                         <Player track = {track.file}/>
+                        <p>{track.desc}</p>
                     </Toogle>
                 </div>
 

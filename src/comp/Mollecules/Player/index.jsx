@@ -1,6 +1,6 @@
 import { useRef, useState } from "react"
 import BtnPlayPause from "../../Atoms/BtnPlayPause"
-
+import Timeline from "../../Atoms/Timeline"
 
 
 const Player = ({id, track, desc}) => {
@@ -16,6 +16,7 @@ const Player = ({id, track, desc}) => {
     return(
         <div className='player'>
             <BtnPlayPause isPlaying={isPlaying} onClick={() => {audioPlayer()}}/>
+            <Timeline />
         </div>
     )
 }

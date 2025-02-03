@@ -220,6 +220,11 @@ nav ul li{
   padding: var(--spacing-medium) var(--spacing-large);
 }
 
+.fill-available{
+  display: flex;
+  width: -webkit-fill-available;
+}
+
 @media (max-width: 768px) {
   nav {
     display: none;
@@ -379,6 +384,35 @@ h2{
   margin-left: var(--spacing-medium)
 }
 
+.timeline{
+  -webkit-appearance: none;
+  width: -webkit-fill-available;
+  margin: auto;
+  padding: 2px;
+  display: block;
+  border-radius: 10px;
+  border: var(--black) var(--line) solid;
+}
+
+.timeline::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 1;
+  transition: all .1s;
+  background: var(--black);
+}
+
+
+.timeline::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  box-shadow: none;
+  border: none;
+  background: transparent;
+}
+
 /*/MOLLECULS/*/
 form{
   display: flex;
@@ -427,6 +461,8 @@ form textarea:focus{
   border-radius: var(--border-radius);
   padding: var(--spacing-small) var(--spacing-large);
   margin: var(--spacing-small) var(--spacing-large);
+  align-items: center;
+  justify-content: space-between;
 }
 
 /*/ORGANISMS/*/
