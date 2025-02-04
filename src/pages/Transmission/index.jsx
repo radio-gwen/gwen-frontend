@@ -7,6 +7,10 @@ import Card from "../../comp/Organisms/Card"
 import Toogle from "../../comp/Organisms/Toogle"
 import Player from "../../comp/Mollecules/Player"
 
+// TODO: Temporary local import for development purposes.
+// Replace with dynamic track loading from the API once the front-end is integrated with the server.
+import jingle from '../../assets/audio/jingle.mp3';
+
 
 
 
@@ -58,8 +62,12 @@ const Transmission = () => {
             
                 <div>
                     <div className='line'></div>
+                    {/* 
+                    TODO: Temporary use of the local 'jingle' file for development.
+                    Replace with dynamic track data from the API once the front-end is integrated with the server.
+                    */}
                     <Toogle title={track.name} id={`track-${track.id}`}>
-                        <Player track = {track.file}/>
+                        <Player track = {jingle}/>  
                         <p>{track.desc}</p>
                     </Toogle>
                 </div>

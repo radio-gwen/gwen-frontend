@@ -413,6 +413,25 @@ h2{
   background: transparent;
 }
 
+.time-indicator{
+  display: flex;
+  margin-left: 15px;
+  margin-right: 5px;
+}
+
+.time-rew-forw {
+  display: flex;
+  margin-left: 10px;
+  margin-right: 5px;
+}
+
+.btn-timeline-mini{
+  padding: 0px 8px 3px 8px;
+  border-radius: var(--border-radius);
+  margin: 0px 2px;
+  border: var(--line) var(--black) solid;
+}
+
 /*/MOLLECULS/*/
 form{
   display: flex;

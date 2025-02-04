@@ -1,6 +1,8 @@
 import { useRef, useState } from "react"
 import BtnPlayPause from "../../Atoms/BtnPlayPause"
 import Timeline from "../../Atoms/Timeline"
+import TimeIndicator from "../../Atoms/TimeIndicator"
+import BtnTimelineMini from "../../Atoms/BtnTimelineMini"
 
 
 const Player = ({id, track, desc}) => {
@@ -16,7 +18,9 @@ const Player = ({id, track, desc}) => {
     return(
         <div className='player'>
             <BtnPlayPause isPlaying={isPlaying} onClick={() => {audioPlayer()}}/>
-            <Timeline />
+            <Timeline trackRef = {audioTrack}/>
+            <BtnTimelineMini trackRef= {audioTrack} />
+            <TimeIndicator trackRef = {audioTrack}/>
         </div>
     )
 }
