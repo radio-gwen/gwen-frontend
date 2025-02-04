@@ -10,6 +10,7 @@ import Events from './pages/Events'
 import About from './pages/About'
 import Transmission from './pages/Transmission'
 import Event from './pages/Event'
+import Track from './pages/Track'
 import Board from './pages/Board'
 import Header from './comp/Templates/Header'
 import Player from './comp/Organisms/Player'
@@ -53,6 +54,7 @@ const App = () => {
               <Route path='/about' element={<About />}/>
               <Route path='/transmission/:transId' element={<Transmission />}/>
               <Route path='/event/:eventId' element={<Event />}/>
+              <Route path='track/:trackId' element={<Track />}/>
               <Route path='/board' element={<Board />}/>
               <Route path='*' element={<Error />} />
             </Routes>

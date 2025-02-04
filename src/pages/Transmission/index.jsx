@@ -67,7 +67,10 @@ const Transmission = () => {
                     Replace with dynamic track data from the API once the front-end is integrated with the server.
                     */}
                     <Toogle title={track.name} id={`track-${track.id}`}>
-                        <Player track = {jingle}/>  
+                        <Player 
+                        track = {jingle}
+                        id ={track.id}
+                        />  
                         <p>{track.desc}</p>
                     </Toogle>
                 </div>

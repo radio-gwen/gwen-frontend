@@ -3,6 +3,7 @@ import BtnPlayPause from "../../Atoms/BtnPlayPause"
 import Timeline from "../../Atoms/Timeline"
 import TimeIndicator from "../../Atoms/TimeIndicator"
 import BtnTimelineMini from "../../Atoms/BtnTimelineMini"
+import BtnIconShare from "../../Atoms/BtnIconShare"
 
 
 const Player = ({id, track, desc}) => {
@@ -21,6 +22,7 @@ const Player = ({id, track, desc}) => {
             <Timeline trackRef = {audioTrack}/>
             <BtnTimelineMini trackRef= {audioTrack} />
             <TimeIndicator trackRef = {audioTrack}/>
+            <BtnIconShare url={`/track/${id}`}/>
         </div>
     )
 }

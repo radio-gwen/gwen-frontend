@@ -16,7 +16,7 @@ const Toogle = ({children, id, title}) => {
                 <ArrowSmall isOpen={isOpen}/>
                 <span>{title}</span>
             </div>
-            <div className={isOpen ? 'open' : 'closed'} >
+            <div className={isOpen ? 'open card-content' : 'closed'} >
                 {children}
             </div>
         </div>

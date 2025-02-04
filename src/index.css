@@ -375,6 +375,18 @@ h2{
   height: 24px; 
 }
 
+.btn-icon{
+  width: 24px;
+  height: 24px;
+  border: solid var(--line) var(--black);
+  border-radius: 100%;
+  padding: 5px 9px 7px 4px;
+}
+
+.btn-icon:hover{
+  background-color: var(--cta-color);
+}
+
 .line{
   border-top: var(--line) var(--black) solid;
 }
@@ -469,7 +481,6 @@ form textarea:focus{
 .card-content{
   display: flex;
   flex-direction: column;
-  max-width: 700px;
   gap: var(--spacing-small);
   padding: var(--spacing-large);
 }
@@ -479,7 +490,6 @@ form textarea:focus{
   border: var(--line) var(--black) solid;
   border-radius: var(--border-radius);
   padding: var(--spacing-small) var(--spacing-large);
-  margin: var(--spacing-small) var(--spacing-large);
   align-items: center;
   justify-content: space-between;
 }
