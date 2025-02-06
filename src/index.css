@@ -137,6 +137,18 @@ a{
   background-color: var(--cta-color);
 }
 
+.background-white{
+  background-color: var(--white);
+}
+
+.background-black{
+  background-color: var(--black);
+}
+
+.hover-cta:hover{
+  background-color: var(--cta-color);
+}
+
 .open{
   opacity: 1;
   visibility: visible;
@@ -155,16 +167,16 @@ a{
   overflow: hidden;
 }
 
+.invisible{
+  display: none;
+}
+
 .flex-horiz{
   display: flex;
   gap: var(--spacing-small);
   align-items: center;
   width: -webkit-fill-available;
-  padding: var(--spacing-small);
-}
-
-.flex-horiz:hover{
-  background-color: var(--cta-color);
+  padding: var(--spacing-medium);
 }
 
 .flex-horiz-center{
@@ -335,12 +347,23 @@ h1{
   background-color: var(--primary-color);
   color: var(--black);
   padding: var(--spacing-medium) 0px var(--spacing-medium) var(--spacing-large);
+  text-transform: uppercase;
 }
 
 h2{
   font-size: larger;
-  font-weight: 600;
+  font-weight:600;
   width: fit-content;
+  text-transform: uppercase;
+  margin-bottom: var(--spacing-small);
+  letter-spacing: 1.2px;
+}
+
+h3{
+  display: flex;
+  font-size: larger;
+  text-transform: uppercase;
+  padding: var(--spacing-small)
 }
 
 .btn-cta{
@@ -378,8 +401,8 @@ h2{
 .btn-icon{
   width: 24px;
   height: 24px;
-  border: solid var(--line) var(--black);
-  border-radius: 100%;
+  /*border: solid var(--line) var(--black);*/
+  border-radius: var(--border-radius);
   padding: 5px 9px 7px 4px;
 }
 
@@ -444,6 +467,27 @@ h2{
   border: var(--line) var(--black) solid;
 }
 
+.label{
+  border: 2px solid;
+  border-radius: var(--border-radius);
+  padding:3px 10px;
+  width: fit-content;
+  font-size: 80%;
+}
+
+.tag-selector{
+  border: solid var(--line) var(--black);
+  padding: var(--spacing-small) var(--spacing-medium);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  margin-left: var(--spacing-small);
+  background-color: var(--white);
+}
+
+.tag-selector:hover{
+  background-color: var(--cta-color);
+}
+
 /*/MOLLECULS/*/
 form{
   display: flex;
@@ -485,6 +529,13 @@ form textarea:focus{
   padding: var(--spacing-large);
 }
 
+.card-content p{
+  max-width: 600px;
+  font-size: 90%;
+  word-spacing: -4px;
+  line-height: 1.3;
+}
+
 .player{
   display: flex;
   border: var(--line) var(--black) solid;
@@ -492,6 +543,13 @@ form textarea:focus{
   padding: var(--spacing-small) var(--spacing-large);
   align-items: center;
   justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+  .player{
+    flex-wrap: wrap;
+    padding: var(--spacing-small);
+  }
 }
 
 /*/ORGANISMS/*/
@@ -531,6 +589,28 @@ form textarea:focus{
   .prtners-list{
     flex-direction: column;
   }
+}
+
+.card-transmission{
+  border: solid var(--line) var(--black);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  cursor: pointer;
+  flex: 1 1 300px;
+  max-width: 400px;
+  box-sizing: border-box;
+}
+
+/*/LAYOUT/*/
+
+.flex-grid{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: var(--spacing-large);
+  padding: var(--spacing-large);
+  align-items: stretch;
+  justify-content: space-evenly;
 }
 
 /*/TRANSFORM/*/

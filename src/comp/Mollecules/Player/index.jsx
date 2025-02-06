@@ -17,12 +17,19 @@ const Player = ({id, track, desc}) => {
     }
 
     return(
-        <div className='player'>
-            <BtnPlayPause isPlaying={isPlaying} onClick={() => {audioPlayer()}}/>
-            <Timeline trackRef = {audioTrack}/>
-            <BtnTimelineMini trackRef= {audioTrack} />
-            <TimeIndicator trackRef = {audioTrack}/>
-            <BtnIconShare url={`/track/${id}`}/>
+        <div className='player background-white'>
+            
+            <div className='flex-horiz'>
+                <BtnPlayPause isPlaying={isPlaying} onClick={() => {audioPlayer()}}/>
+                <Timeline trackRef = {audioTrack}/>
+            </div>
+            
+            
+                <BtnTimelineMini trackRef= {audioTrack} />
+                <TimeIndicator trackRef = {audioTrack}/>
+                <BtnIconShare url={`/track/${id}`}/>
+            
+            
         </div>
     )
 }

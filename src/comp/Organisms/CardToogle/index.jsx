@@ -12,11 +12,11 @@ const CardToogle = ({children, title, desc, btnContent, id}) => {
 
     return(
         <div className='card-toogle' onClick={ () => toogle()}>
-            <div key={id} className='flex-horiz'>
+            <div key={id} className='flex-horiz hover-cta'>
                 <ArrowSmall isOpen={isOpen}/>
                 <span>{title}</span>
             </div>
-           <div className={isOpen ? 'open' : 'closed'}>
+           <div className={isOpen ? 'open ' : 'closed'}>
             {children}
            </div>
         </div>

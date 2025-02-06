@@ -7,11 +7,9 @@ import Card from "../../comp/Organisms/Card"
 import Toogle from "../../comp/Organisms/Toogle"
 import Player from "../../comp/Mollecules/Player"
 
-import eventsList from "../../data/eventsList"
-
-/* we find the right event object in the eventsList*/
-
-
+// TODO replace local assets with dynamics ones
+import defaultImage from '../../assets/images/transmissions/simple80s.jpg'
+import jingle from '../../assets/audio/jingle.mp3'
 
 
 const Event = () => {
@@ -43,11 +41,12 @@ const Event = () => {
     return (
         <Section>
             <h1>{event.title}</h1>
-            <Carousel image={''} />
+            <Carousel image={defaultImage} />
             <Card
             title = {event.title}
             desc = {event.desc}
             text = {event.text}
+            label = {event.label}
             btnContent = 'Back'
             url = '/'
             />
@@ -56,7 +55,7 @@ const Event = () => {
                 <div>
                     <div className='line'></div>
                     <Toogle title={track.name} id={`track-${track.id}`}>
-                        <Player track = {track.file}/>
+                        <Player track = {jingle}/>
                     </Toogle>
                 </div>
             )}

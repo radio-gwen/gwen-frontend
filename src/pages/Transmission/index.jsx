@@ -10,7 +10,7 @@ import Player from "../../comp/Mollecules/Player"
 // TODO: Temporary local import for development purposes.
 // Replace with dynamic track loading from the API once the front-end is integrated with the server.
 import jingle from '../../assets/audio/jingle.mp3';
-
+import defaultImage from '../../assets/images/transmissions/simple80s.jpg'
 
 
 
@@ -48,7 +48,7 @@ const Transmission = () => {
     return(
        <Section>
 
-            <Carousel image = {transmission.image} width= '300px'/>
+            <Carousel image = {defaultImage} width= '300px'/>
 
             <Card
             title = {transmission.title}
@@ -56,6 +56,7 @@ const Transmission = () => {
             text = {transmission.text}
             btnContent = 'Back'
             url = '/'
+            label = {transmission.label}
             />
 
             {tracks.map( (track) =>  
@@ -67,11 +68,11 @@ const Transmission = () => {
                     Replace with dynamic track data from the API once the front-end is integrated with the server.
                     */}
                     <Toogle title={track.name} id={`track-${track.id}`}>
+                    <p>{track.desc}</p>
                         <Player 
                         track = {jingle}
                         id ={track.id}
                         />  
-                        <p>{track.desc}</p>
                     </Toogle>
                 </div>
 

@@ -26,7 +26,7 @@ const TimeIndicator = ({trackRef}) => {
         }
 
         audio.addEventListener('timeupdate', updateTime)
-        audio.addEventListener('loadmetadata', updateDuration)
+        audio.addEventListener('loadedmetadata', updateDuration)
 
         return () => {
             audio.removeEventListener('timeupdate', updateTime)

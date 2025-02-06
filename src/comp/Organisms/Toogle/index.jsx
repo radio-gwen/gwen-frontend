@@ -12,7 +12,7 @@ const Toogle = ({children, id, title}) => {
 
     return(
         <div key={`toogle-${id}`} className='card-toogle' >
-            <div className="flex-horiz" onClick={() => toogle()}>
+            <div className="flex-horiz hover-cta" onClick={() => toogle()}>
                 <ArrowSmall isOpen={isOpen}/>
                 <span>{title}</span>
             </div>
