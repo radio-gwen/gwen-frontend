@@ -11,8 +11,7 @@ import defaultImage from '../../assets/images/transmissions/simple80s.jpg'
 
 const Events = () => {
 
-    const {data: eventsData, isLoading: isEventLoading} = useFetch(`http://localhost:8000/events`)
-    const eventsList = eventsData?.eventsList || [];
+    const {data: eventsData, isLoading: isEventLoading} = useFetch(`https://localhost:8000/api/events/`)
 
     const [activeTags, setActiveTags] = useState([])
 
@@ -29,12 +28,12 @@ const Events = () => {
                 setActiveTags={setActiveTags}
             />
             <div className='flex-grid'>
-                    {eventsList.map( event => {
-                        const isActive = !(activeTags.length > 0 && !activeTags.includes(event.label))
+                    {eventsData.map( event => {
+                        const isActive = !(activeTags.length > 0 && !activeTags.includes(event.event_label))
                         return(
                         <CardTransmission 
-                        title={event.title}
-                        url={`/transmission/${event.id}`} 
+                        title={event.event_title}
+                        url={`/transmission/${event.event_id_old}`} 
                         isActive={isActive}
                         image = {defaultImage}
                         />)}

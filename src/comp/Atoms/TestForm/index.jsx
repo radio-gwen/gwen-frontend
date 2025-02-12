@@ -11,7 +11,7 @@ const TestForm = () => {
 
         const formData = { mail: e.target["my_input"].value };
 
-        const response = await fetch('http://localhost:8000/users', {
+        const response = await fetch('https://localhost:8000/api/users', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

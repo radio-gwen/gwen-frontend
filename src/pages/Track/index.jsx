@@ -15,14 +15,13 @@ const Track = () => {
 
     const {trackId} = useParams()
 
-    const {data: tracksData, isLoading: isTracksLoading} = useFetch(`http://localhost:8000/tracks`)
-    const tracksList = tracksData?.tracksList || []
+    const {data: tracksData, isLoading: isTracksLoading} = useFetch(`https://localhost:8000/api/tracks/`)
 
     if (isTracksLoading) {
         return <div>Loading...</div>; //TODO Add a loading indicator
     }
 
-    const track = tracksList.find(t => String(t.id) === trackId);
+    const track = tracksData.find(track => String(track.id) === trackId);
 
     if (!track) {
         return <div>Track not found!</div>;
@@ -33,10 +32,10 @@ const Track = () => {
         <Section className='background-white'>
             <Carousel image={defaultImage}/>
             <Card
-            title = {track.name}
+            title = {track.tracks_title}
             desc = {track.desc}
             btnContent = 'Back'
-            label = {track.label}
+            label = {track.tracks_label}
             url = '/'
             />
             <BlockCenter>

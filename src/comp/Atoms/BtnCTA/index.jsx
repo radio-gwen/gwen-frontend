@@ -1,6 +1,6 @@
-const BtnCTA = ({btnContent, onSubmit}) => {
+const BtnCTA = ({btnContent, onSubmit, onClick}) => {
     return(
-        <button className='btn-cta' onSubmit={onSubmit}>
+        <button className='btn-cta' onSubmit={onSubmit} onClick={onClick}>
             {btnContent}
         </button>
     )

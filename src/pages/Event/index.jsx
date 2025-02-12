@@ -16,11 +16,10 @@ const Event = () => {
 
     const {eventId} = useParams()
 
-    const {data: eventsData, isLoading: isEventLoading} = useFetch(`http://localhost:8000/events`)
-    const eventsList = eventsData?.eventsList || []
+    const {data: eventsData, isLoading: isEventLoading} = useFetch(`https://localhost:8000/api/events/`)
 
-    const {data: tracksData, isLoading: isTracksLoading} = useFetch(`http://localhost:8000/tracks`)
-    const tracksList = tracksData?.tracksList || []
+    const {data: tracksData, isLoading: isTracksLoading} = useFetch(`https://localhost:8000/api/tracks/`)
+    
 
     if (isEventLoading) {
         return <div>Loading...</div>; // Add a loading indicator
@@ -30,23 +29,28 @@ const Event = () => {
         return <div>Loading...</div>; // Add a loading indicator
     }
 
-    const event = eventsList.find((t) => t.id === String(eventId))
+    const event = eventsData.find((event) => event.id_old === Number(eventId))
 
     if (!event) {
         console.log('event not found!')
     }
 
-    const tracks = tracksList.filter( (t) => t.mainId === String(eventId) && t.type === 'event' )
+    // We look for the refTransmission id
+    const refEventId = event.id
+
+    const tracks = tracksData.filter(track => 
+        track.tracks_id?.toString().startsWith(refEventId.toString())
+      )
 
     return (
         <Section>
-            <h1>{event.title}</h1>
+            <h1>{event.event_title}</h1>
             <Carousel image={defaultImage} />
             <Card
-            title = {event.title}
-            desc = {event.desc}
+            title = {event.event_title}
+            desc = {event.event_desc}
             text = {event.text}
-            label = {event.label}
+            label = {event.event_label}
             btnContent = 'Back'
             url = '/'
             />
@@ -54,7 +58,8 @@ const Event = () => {
             {tracks.map( (track) =>    
                 <div>
                     <div className='line'></div>
-                    <Toogle title={track.name} id={`track-${track.id}`}>
+                    <Toogle title={track.tracks_title} id={`track-${track.id}`}>
+                        <p>{track.tracks_desc}</p>
                         <Player track = {jingle}/>
                     </Toogle>
                 </div>
@@ -65,3 +70,4 @@ const Event = () => {
 }
 
 export default Event
+

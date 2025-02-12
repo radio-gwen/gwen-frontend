@@ -69,7 +69,7 @@ const TestForm2 = () => {
         try {
             // Transmission Submission
             const transmissionResponse = await fetch(
-                "http://localhost:8000/testtransmissions",
+                "https://localhost:8000/api/transmissions",
                 {
                     method: "POST",
                     body: formData, // No need to set Content-Type manually
@@ -107,7 +107,7 @@ const TestForm2 = () => {
             }
 
             // Track submission
-            const trackResponse = await fetch("http://localhost:8000/tracks", {
+            const trackResponse = await fetch("https://localhost:8000/api/tracks", {
                 method: "POST",
                 body: formTrackData,
             });

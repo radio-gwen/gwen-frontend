@@ -1,4 +1,5 @@
 import { useFetch } from "../../utils/hooks/useFetch";
+import { useState } from "react";
 
 import Section from "../../comp/Templates/Section";
 import H1 from "../../comp/Atoms/H1";
@@ -8,20 +9,28 @@ import CardImage from "../../comp/Organisms/CardImage";
 import CardToogle from "../../comp/Organisms/CardToogle";
 import Newsletter from "../../comp/Organisms/Newsletter";
 import Contacts from "../../comp/Templates/Contats";
+import BtnCTA from "../../comp/Atoms/BtnCTA";
 /*TODO Cancel the local import to fetch transmission.image*/
-import defaultImage from "../../assets/images/transmissions/simple80s.jpg"
+import defaultImage from "../../assets/images/transmissions/simple80s.jpg";
+
 
 function Home() {
 
-  const {data: transmissionsData, isLoading: isTransLoading} = useFetch(`http://localhost:8000/transmissions`)
-  const transmissionsList = transmissionsData?.transmissionsList || [];
+  const [visibleTransmissions, setVisibleTransmissions] = useState(3)
+  const [visibleEvents, setVisibleEvents] = useState(3)
 
-  const {data: eventsData, isLoading: isEventsLoading} = useFetch(`http://localhost:8000/events`)
-  const eventsList = eventsData?.eventsList || [];
+  const {data: transmissionsData, isLoading: isTransLoading} = useFetch(`https://localhost:8000/api/transmissions/`,{redirect: 'follow'})
+
+  const {data: eventsData, isLoading: isEventsLoading} = useFetch(`https://localhost:8000/api/events/`)
 
   if (isTransLoading || isEventsLoading) {
     return <div>Loading...</div>; // Add a loading indicator
-}
+}  
+
+  const loadMore = (type) => {
+    type === 'transmissions' ? setVisibleTransmissions( prev => prev + 3 ) : setVisibleEvents( prev => prev + 3 )
+  }
+
 
   return (
     <div>
@@ -29,45 +38,46 @@ function Home() {
         <H1 content='Trasmissioni'/>
         <div className='line'></div>
 
-         {transmissionsList.map( transmission => 
-          <div key = {`div-${transmission.id}`}>
-            <CardImage 
-              key = {transmission.id}
-              title = {transmission.title}
-              desc = {transmission.desc}
-              btnContent = 'Vai!'
-              /*TODO Fetch transmission.image*/
-              imgSrc={defaultImage}
-              imgDesc={transmission.imgDesc}
-              url = {`/transmission/${transmission.id}`}
-              label = {transmission.label}
-            />
-            <div key = {`line-${transmission.id}`} className='line'></div>
-          </div>
+         {transmissionsData.slice(0, visibleTransmissions).map( transmission => 
+          <div key = {`div-${transmission.transmission_id_old}`}>
+          <CardImage 
+            key = {transmission.id_old}
+            title = {transmission.transmission_title}
+            desc = {transmission.transmission_desc}
+            btnContent = 'Vai!'
+            /*TODO Fetch transmission.image*/
+            imgSrc={defaultImage}
+            imgDesc={transmission.transmission_imgDesc}
+            url = {`/transmission/${String(transmission.id_old)}`}
+            label = {transmission.transmission_label}
+          />
+          <div key = {`line-${transmission.id_old}`} className='line'></div>
+        </div>
         )} 
-
+        <div className="flex-horiz-center background-black"> <BtnCTA btnContent='...più trasmissioni' onClick={() => loadMore('transmissions')} /> </div>
       </Section>        
 
       <Section>
         <H1 content='Eventi' />
         
         <div className='line'></div>
-        {eventsList.map( event =>
-          <div key = {`div-${event.id}`}>
+        {eventsData.slice(0, visibleEvents).map( event =>
+          <div key = {`div-${event.id_old}`}>
             <CardToogle
-            key ={event.id}
-            title={event.title} 
+            key ={event.id_old}
+            title={event.event_title} 
             >
               <CardContent 
-              desc={event.desc}
+              desc={event.event_desc}
               btnContent={'Vai'}
-              url={`/event/${event.id}`}
-              label={event.label}
+              url={`/event/${event.id_old}`}
+              label={event.event_label}
               />
             </CardToogle>
             <div className='line'></div>
           </div>
         )}
+        <div className="flex-horiz-center background-black"> <BtnCTA btnContent='...più eventi' onClick={() => loadMore('events')}/> </div>
       </Section>
 
       <Section className='background-cta'>

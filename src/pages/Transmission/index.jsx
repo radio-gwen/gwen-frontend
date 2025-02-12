@@ -18,11 +18,9 @@ const Transmission = () => {
 
     const {transId} = useParams()
 
-    const {data: transmissionsData, isLoading: isTransLoading} = useFetch(`http://localhost:8000/transmissions`)
-    const transmissionsList = transmissionsData?.transmissionsList || []
+    const {data: transmissionsData, isLoading: isTransLoading} = useFetch(`https://localhost:8000/api/transmissions/`)
 
-    const {data: tracksData, isLoading: isTracksLoading} = useFetch(`http://localhost:8000/tracks`)
-    const tracksList = tracksData?.tracksList || []
+    const {data: tracksData, isLoading: isTracksLoading} = useFetch(`https://localhost:8000/api/tracks/`)
   
     if (isTransLoading) {
         return <div>Loading...</div>; // Add a loading indicator
@@ -32,13 +30,18 @@ const Transmission = () => {
         return <div>Loading...</div>; // Add a loading indicator
     }
 
-    const transmission = transmissionsList.find((t) => t.id === String(transId))
+    const transmission = transmissionsData.find((t) => t.id_old === Number(transId))
 
     if (!transmission) {
         console.log('transmission not found!')
     }
 
-    const tracks = tracksList.filter( (t) => t.mainId === 1234 && t.type === 'trans' )
+    // We look for the refTransmission id
+    const refTransId = transmission.id
+
+    const tracks = tracksData.filter(track => 
+        track.tracks_id?.toString().startsWith(refTransId.toString())
+      )
 
     if (!tracks) {
         console.log('tracks not found!')
@@ -51,25 +54,22 @@ const Transmission = () => {
             <Carousel image = {defaultImage} width= '300px'/>
 
             <Card
-            title = {transmission.title}
-            desc = {transmission.desc}
-            text = {transmission.text}
+            title = {transmission.transmission_title}
+            desc = {transmission.transmission_desc}
+            text = {transmission.transmission_text}
             btnContent = 'Back'
             url = '/'
-            label = {transmission.label}
+            label = {transmission.transmission_label}
             />
 
             {tracks.map( (track) =>  
             
                 <div>
                     <div className='line'></div>
-                    {/* 
-                    TODO: Temporary use of the local 'jingle' file for development.
-                    Replace with dynamic track data from the API once the front-end is integrated with the server.
-                    */}
-                    <Toogle title={track.name} id={`track-${track.id}`}>
-                    <p>{track.desc}</p>
+                    <Toogle title={track.tracks_title} id={`track-${track.track_id}`}>
+                    <p>{track.tracks_desc}</p>
                         <Player 
+                        //TODO replace jingle with a dynamic track
                         track = {jingle}
                         id ={track.id}
                         />  
