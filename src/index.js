@@ -12,7 +12,7 @@ import Transmission from './pages/Transmission'
 import Event from './pages/Event'
 import Track from './pages/Track'
 import Board from './pages/Board'
-import FormTransmission from './comp/Templates/FormTransmission'
+import BoardForm from './comp/Templates/BoardForm'
 
 
 import Header from './comp/Templates/Header'
@@ -57,10 +57,10 @@ const App = () => {
               <Route path='/about' element={<About />}/>
               <Route path='/transmission/:transId' element={<Transmission />}/>
               <Route path='/event/:eventId' element={<Event />}/>
-              <Route path='track/:trackId' element={<Track />}/>
+              <Route path='/track/:trackId' element={<Track />}/>
               <Route path='/board' element={<Board />}>
-                <Route path=':formId' element={<FormTransmission />}/>
-              </Route>
+                <Route path=':type/:id' element={<BoardForm />}/>
+              </Route>           
               <Route path='*' element={<Error />} />
             </Routes>
             <Footer />

@@ -7,7 +7,6 @@ const Toogle = ({children, id, title}) => {
 
     const toogle = () => {
         setIsOpen(!isOpen)
-        console.log('isOpen')
     }
 
     return(
@@ -16,7 +15,7 @@ const Toogle = ({children, id, title}) => {
                 <ArrowSmall isOpen={isOpen}/>
                 <span>{title}</span>
             </div>
-            <div className={isOpen ? 'open card-content' : 'closed'} >
+            <div c >
                 {children}
             </div>
         </div>

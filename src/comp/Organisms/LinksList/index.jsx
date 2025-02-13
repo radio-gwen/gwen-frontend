@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 
-const LinksList = ({data, text, url, key}) => {
+const LinksList = ({data, text, url, key, onClick}) => {
 
     console.log({data})
 
@@ -8,8 +8,8 @@ const LinksList = ({data, text, url, key}) => {
         <div className='links-list '>
             <ul>
                 {data.map( (item, index) =>
-                <li key={item.index}>
-                    <Link to={url[index]} >{text[index]}</Link>
+                <li key={item.index} onClick={onClick}>
+                    <Link to={url[index]}> {text[index]} </Link>
                 </li>
                 )}
             </ul>

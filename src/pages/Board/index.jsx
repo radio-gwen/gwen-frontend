@@ -1,22 +1,38 @@
 import { useFetch } from "../../utils/hooks/useFetch"
 import { useState } from "react"
-
+import { Outlet } from "react-router-dom"
 import { useParams } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 import Section from "../../comp/Templates/Section"
 import Toogle from "../../comp/Organisms/Toogle"
 import LinksList from "../../comp/Organisms/LinksList"
 import SearchBar from "../../comp/Mollecules/SearchBar"
 import H1 from "../../comp/Atoms/H1"
-import TestForm2 from "../../comp/Atoms/TestForm2"
+import BtnCTA from "../../comp/Atoms/BtnCTA"
 
 
 const Board = () =>{
 
+    const [isTransOpen, setIsTransOpen] = useState(false)
+    const [isEventsOpen, setIsEventsOpen] = useState(false)
+
+    const toogle = (type) => {
+        if (type === 'trans'){
+        setIsTransOpen(!isTransOpen)
+        }
+        if (type === 'event'){
+            setIsEventsOpen(!isEventsOpen)
+        }
+    }
+
     //We fetch the transmissions data
     const { data: transmissionsData, isLoading: isTransLoading } = useFetch(`https://localhost:8000/api/transmissions/`)
     // TODO We get the url data
-    
+
+    // We get the id from the URL dynamically (TODO)
+    const {type, id} = useParams()
+
     //We create a state for the tranmissions search field input
     const [searchTerm, setSearchTerm] = useState('')
 
@@ -37,58 +53,58 @@ const Board = () =>{
 
     const filteredData = filterData(sortedData, searchTerm);
     
+   
 
     return(
         <Section className='background-primary'>
 
-            <H1 content='Transmissions'/>
+            <H1 content='Board'/>
+
             <div className='line'></div>
 
-                <Toogle title='all transmissions'>
-                
-                    <div className='flex-horiz links-list-search-bar'>
-                    <SearchBar
-                        searchTerm = {searchTerm}
-                        setSearchTerm= {setSearchTerm}
-                    />
-                    </div>
+            <div className='flex-horiz background-black text-white'>
 
-                    <LinksList 
+            <span onClick={ () => toogle('trans')}>Trasmissioni</span>
+            <span> | </span>
+            <Link to='/board/trans/0'><span>Nuova Trasmissione</span></Link>
+            <span> | </span>
+            <span onClick={ () => toogle('event')}>Eventi</span>
+            <span> | </span>
+            <Link to='/board/event/0'><span>Nuovo Evento</span></Link>
+            <span> | </span>
+            <span>Chi Siamo</span>
+            <span> | </span>
+            <span>Partners</span>
+            <span> | </span>
+            <span>Tags</span>
+
+            </div>
+
+            <div className={isTransOpen ? 'open' : 'closed'}>
+                <div className='flex-horiz links-list-search-bar'>
+                    <SearchBar  searchTerm = {searchTerm} setSearchTerm= {setSearchTerm}/>
+                </div>
+                <LinksList
+                    onClick = {() => toogle('trans')}
                     data = {filteredData}
                     text= {filteredData.map(item => item.transmission_title)}
-                    url= {filteredData.map(item => `trans${item.id_old}`)}
-                    />
+                    url= {filteredData.map(item => `trans/${item.id_old}`)}
+                />
+            </div>
 
-                    
-                                        
-                </Toogle>
-                <div className='line'></div>
-                <Toogle title='new transmission'>
-                    <TestForm2 />
-                </Toogle>
-            
-            <div className='line'></div>
-            <H1 content='Events'/>
-            <div className='line'></div>
+            <div className={isEventsOpen ? 'open' : 'closed'}>
+                <div className='flex-horiz links-list-search-bar'>
+                    <SearchBar  searchTerm = {searchTerm} setSearchTerm= {setSearchTerm}/>
+                </div>
+                <LinksList
+                    onClick = {() => toogle('event')}
+                    data = {filteredData}
+                    text= {filteredData.map(item => item.transmission_title)}
+                    url= {filteredData.map(item => `trans/${item.id_old}`)}
+                />
+            </div>
 
-                <Toogle title='all events'>
-                </Toogle>
-                <div className='line'></div>
-                <Toogle title='new event'>
-                </Toogle>
-
-            <div className='line'></div>
-            <H1 content='Contents'/>
-            <div className='line'></div>
-
-                <Toogle title='about'>
-                </Toogle>
-                <div className='line'></div>
-                <Toogle title='partners'>
-                </Toogle>
-                <div className='line'></div>
-                <Toogle title='tags'>
-                </Toogle>
+            < Outlet context={{type, id, transmissionsData}}/>
             
         </Section>
     )
