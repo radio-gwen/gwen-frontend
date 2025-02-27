@@ -1,6 +1,6 @@
-const BlockCenter = ( {children} ) => {
+const BlockCenter = ( {children, background} ) => {
     return (
-        <div className='block-center'>
+        <div className= {`block-center ${background}`}  >
             {children}
         </div>
     )

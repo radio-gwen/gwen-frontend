@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom"
 import { Link } from "react-router-dom"
 
 import Section from "../../comp/Templates/Section"
-import Toogle from "../../comp/Organisms/Toogle"
+import BlockCenter from "../../comp/Organisms/BlockCenter"
 import LinksList from "../../comp/Organisms/LinksList"
 import SearchBar from "../../comp/Mollecules/SearchBar"
 import H1 from "../../comp/Atoms/H1"
@@ -64,21 +64,25 @@ const Board = () =>{
 
             <div className='flex-horiz background-black text-white'>
 
-            <span onClick={ () => toogle('trans')}>Trasmissioni</span>
-            <span> | </span>
-            <Link to='/board/trans/0'><span>Nuova Trasmissione</span></Link>
-            <span> | </span>
-            <span onClick={ () => toogle('event')}>Eventi</span>
-            <span> | </span>
-            <Link to='/board/event/0'><span>Nuovo Evento</span></Link>
-            <span> | </span>
-            <span>Chi Siamo</span>
-            <span> | </span>
-            <span>Partners</span>
-            <span> | </span>
-            <span>Tags</span>
+                <span className='hover-underline' onClick={ () => toogle('trans')}>Trasmissioni</span>
+                <span> | </span>
+                <Link to='/board/trans/0'><span className='hover-underline'>Nuova Trasmissione</span></Link>
+                <span> | </span>
+                <span className='hover-underline' onClick={ () => toogle('event')}>Eventi</span>
+                <span> | </span>
+                <Link to='/board/event/0'><span className='hover-underline'>Nuovo Evento</span></Link>
+                <span> | </span>
+                <span className='hover-underline'>Chi Siamo</span>
+                <span> | </span>
+                <span className='hover-underline'>Partners</span>
+                <span> | </span>
+                <span className='hover-underline'>Tags</span>
 
             </div>
+
+            <BlockCenter background='background-white'>
+                Benvenuti a bordo del Board. Il panello di controllo per la publicazione di contenuti sul sito di radio Gwendalyn.
+            </BlockCenter>
 
             <div className={isTransOpen ? 'open' : 'closed'}>
                 <div className='flex-horiz links-list-search-bar'>

@@ -155,6 +155,12 @@ a{
 
 .hover-cta:hover{
   background-color: var(--cta-color);
+  cursor: pointer;
+}
+
+.hover-underline:hover{
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .open{
@@ -288,11 +294,10 @@ nav ul li{
 
 .block-center{
   display: flex;
-  margin: var(--spacing-very-large) auto;
+  margin: var(--spacing-very-large) 20%;
   border: var(--line) var(--black) solid;
   border-radius: var(--border-radius);
   padding: var(--spacing-large) var(--spacing-very-very-large);
-  background-color: var(--primary-color);
 }
 
 section{
@@ -374,6 +379,20 @@ h3{
   padding: var(--spacing-small)
 }
 
+.btn-primary{
+  all: unset;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  background-color: transparent;
+  padding: var(--spacing-small) var(--spacing-large);
+  border: var(--black) var(--line) solid;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  box-shadow: var(--box-shadow-default);
+  margin-top: var(--spacing-small);
+}
+
 .btn-cta{
   all: unset;
   display: flex;
@@ -420,6 +439,10 @@ h3{
 
 .line{
   border-top: var(--line) var(--black) solid;
+}
+
+.gap > *:not(:last-child){
+  margin-bottom: var(--spacing-small);
 }
 
 .logo{
@@ -496,6 +519,18 @@ h3{
   background-color: var(--cta-color);
 }
 
+.image-box{
+  border: solid var(--line) var(--black);
+  border-radius: var(--border-radius);
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+}
+
+.space-medium{
+  height: var(--spacing-medium);
+}
+
 /*/MOLLECULS/*/
 form{
   display: flex;
@@ -507,6 +542,7 @@ form{
 
 form input {
   border: solid var(--line) var(--black);
+  border-radius: var(--border-radius);
   padding: var(--spacing-small) var(--spacing-large);
   font-family: inherit;
   width: -webkit-fill-available;
@@ -519,7 +555,9 @@ form input:focus{
 
 form textarea{
   border: solid var(--line) var(--black);
+  border-radius: var(--border-radius);
   min-width: 70%;
+  min-height: 200px;
   padding: var(--spacing-small) var(--spacing-large);
   font-family: inherit;
   width: -webkit-fill-available;
@@ -528,6 +566,33 @@ form textarea{
 form textarea:focus{
   background-color: var(--secondary-color);
   outline: none;
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  padding: 10px 10px;
+  margin-right: 5px;
+  border: 2px solid #333;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  background-color: #fff;
+}
+
+input[type="checkbox"]:checked::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  background-color: #333;
+  border-radius: 2px;
 }
 
 .card-content{

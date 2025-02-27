@@ -5,6 +5,8 @@ import { useOutletContext } from "react-router-dom"
 import FormTransNew from "../../Organisms/FormTransNew"
 import FormTransUpdate from "../../Organisms/FormTransUpdate"
 
+import BlockCenter from "../../Organisms/BlockCenter"
+
 const BoardForm = () => {
 
     const {type, id, transmissionsData} = useOutletContext()
@@ -16,10 +18,10 @@ const BoardForm = () => {
 
     return (
         
-        <>
+        <BlockCenter background='background-white'>
             {type === 'trans' && numiricId === 0 && <FormTransNew />}
             {type === 'trans' && numiricId != 0 && <FormTransUpdate transmission={transmission} />}
-        </>
+        </BlockCenter>
 
     )
 }
