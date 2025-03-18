@@ -13,7 +13,6 @@ import jingle from '../../assets/audio/jingle.mp3';
 import defaultImage from '../../assets/images/transmissions/simple80s.jpg'
 
 
-
 const Transmission = () => {
 
     const {transId} = useParams()

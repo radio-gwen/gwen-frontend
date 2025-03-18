@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useState } from "react"
+import { useRef } from "react";
 
 import BtnCTA from "../../Atoms/BtnCTA"
 import BtnPrimary from "../../Atoms/BtnPrimary"
@@ -17,6 +18,7 @@ const FormTransNew = () => {
     const [message, setMessage] = useState("")
     const [image, setImage] = useState(null)
     const [imagePreview, setImagePreview] = useState(defaultImage)
+    const fileInputRef = useRef(null);
 
     const handleProgramTypeChange = (event, type) => {
         setProgramType((prev) =>
@@ -58,6 +60,10 @@ const FormTransNew = () => {
             setImagePreview(URL.createObjectURL(file))
         }
     }
+
+    const handleImageBoxClick = () => {
+        fileInputRef.current.click(); // Trigger file input click
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -158,13 +164,22 @@ const FormTransNew = () => {
         <form onSubmit={handleSubmit}>
             <div className="gap">                
 
-                <ImageBox src={imagePreview} />
+            <div onClick={handleImageBoxClick} style={{ cursor: "pointer", display: "inline-block" }}>
+                <ImageBox src={imagePreview}/>
+            </div>
+
                 <div className="space-medium"></div>
                 <h2>Nuova Trasmissione</h2>
 
                 {/* IMAGE UPLOAD */}
-                <input type="file" accept="image/*" onChange={handleImageChange} />
-                <div className="space-medium"></div>
+                <input 
+                    type="file" 
+                    accept="image/*" 
+                    onChange={handleImageChange} 
+                    ref={fileInputRef} // Connect input to useRef
+                    style={{ display: "none" }} // Hide the input field
+                    />
+                
 
                 <div className='flex-horiz'>
                     <input

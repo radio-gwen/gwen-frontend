@@ -33,7 +33,7 @@ const Events = () => {
                         return(
                         <CardTransmission 
                         title={event.event_title}
-                        url={`/transmission/${event.event_id_old}`} 
+                        url={`/event/${event.id_old}`} 
                         isActive={isActive}
                         image = {defaultImage}
                         />)}
