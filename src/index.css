@@ -202,6 +202,15 @@ a{
   padding: var(--spacing-small);
 }
 
+.flex-horiz-right{
+  display: flex;
+  gap: var(--spacing-small);
+  align-items: center;
+  width: -webkit-fill-available;
+  padding: var(--spacing-medium);
+  flex-direction: row-reverse;
+}
+
 .flex-vert-center{
   display: flex;
   gap: var(--spacing-small);
@@ -294,7 +303,7 @@ nav ul li{
 
 .block-center{
   display: flex;
-  margin: var(--spacing-very-large) 20%;
+  margin: var(--spacing-medium);
   border: var(--line) var(--black) solid;
   border-radius: var(--border-radius);
   padding: var(--spacing-large) var(--spacing-very-very-large);
@@ -390,6 +399,17 @@ h3{
   border-radius: var(--border-radius);
   cursor: pointer;
   box-shadow: var(--box-shadow-default);
+  margin-top: var(--spacing-small);
+}
+
+.btn-tertiary{
+  all: unset;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  cursor: pointer;
+  border-bottom: solid  var(--line);
+  padding-bottom: 5px;
   margin-top: var(--spacing-small);
 }
 
@@ -531,13 +551,17 @@ h3{
   height: var(--spacing-medium);
 }
 
+.space-large{
+  height: var(--spacing-large);
+}
+
 /*/MOLLECULS/*/
 form{
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: var(--spacing-small);
   margin: var(--spacing-very-large);
+  width: -webkit-fill-available;
 }
 
 form input {
@@ -576,7 +600,6 @@ input[type="checkbox"] {
   width: 20px;
   height: 20px;
   padding: 10px 10px;
-  margin-right: 5px;
   border: 2px solid #333;
   border-radius: 4px;
   cursor: pointer;
@@ -691,7 +714,7 @@ input[type="checkbox"]:checked::before {
 .links-list{
   column-count: 2;
   padding: var(--spacing-medium);
-  margin: var(--spacing-very-large) var(--spacing-very-very-large);
+  margin: var(--spacing-large) var(--spacing-very-very-large);
   column-gap: 20px;
 }
 

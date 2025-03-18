@@ -37,11 +37,12 @@ const Transmission = () => {
     }
 
     // We look for the refTransmission id
-    const refTransId = transmission.id
+    const refTransId = transmission.id_old
 
     const tracks = tracksData.filter(track => 
-        track.tracks_id?.toString().startsWith(refTransId.toString())
-      )
+        track.transmission_id?.toString().startsWith(refTransId.toString()) &&
+        track.tracks_publication === "trans"
+    )
 
     if (!tracks) {
         console.log('tracks not found!')

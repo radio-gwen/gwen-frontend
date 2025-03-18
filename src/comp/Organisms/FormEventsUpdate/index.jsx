@@ -8,53 +8,50 @@ import BtnPrimary from "../../Atoms/BtnPrimary"
 // TODO replace local asset with dynamic ones
 import defaultImage from "../../../assets/images/transmissions/simple80s.jpg"
 
-const FormTransUpdate = ({transmission}) =>  {
-
-    const [title, setTitle] = useState(transmission?.transmission_title || "")
-    const [desc, setDesc] = useState(transmission?.transmission_desc || "")
-    const [text, setText] = useState(transmission?.transmission_text || "")
+const FormEventsUpdate = ({event}) => {
+    const [title, setTitle] = useState(event?.event_title || "")
+    const [desc, setDesc] = useState(event?.event_desc || "")
+    const [text, setText] = useState(event?.event_text || "")
     const [existingTracks, setExistingTracks] = useState([]);  // Holds tracks from API
     const [newTracks, setNewTracks] = useState([]);  // Holds newly added tracks
     const [message, setMessage] = useState('')
 
     useEffect(() => {
-        if (transmission) {
-            setTitle(transmission.transmission_title || "")
-            setDesc(transmission.transmission_desc || "")
-            setText(transmission.transmission_text || "")
+        if (event) {
+            setTitle(event.event_title || "")
+            setDesc(event.event_desc || "")
+            setText(event.transmission_text || "")
         }
-    }, [transmission])
-
+    }, [event])
 
     // Fetch tracks related to this transmission
     useEffect(() => {
-        if (!transmission?.id_old) return; // Prevent fetching if id is undefined
+        if (!event?.id_old) return; // Prevent fetching if id is undefined
 
         const fetchTracks = async () => {
             try {
                 const response = await axios.get(
-                    `https://localhost:8000/api/tracks/?transmission_id=${transmission.id_old}`
+                    `https://localhost:8000/api/tracks/?event_id=${event.id_old}`
                 );
                 const filteredTracks = response.data.filter(
-                    (track) => track.transmission_id === transmission.id_old &&
-                    track.tracks_publication === 'trans'
+                    (track) => track.transmission_id === event.id_old &&
+                    track.tracks_publication === 'event'
                 );
                 setExistingTracks(filteredTracks)
             } catch (error) {
                 console.error("Error fetching tracks:", error.response?.data || error.message)
             }
-        };
+        }
 
         fetchTracks();
-    }, [transmission?.id_old])
-
+    }, [event?.id_old])
 
 
     // Add a new (empty) track to the state
     const addTrack = () => {
         setNewTracks((prevTracks) => [
             ...prevTracks,
-            { tracks_publication: "trans", tracks_title: "", tracks_desc: "", tracks_date: "", transmission_id: transmission.id_old }, // Ensure transmission_id is set
+            { tracks_publication: "event", tracks_title: "", tracks_desc: "", tracks_date: "", transmission_id: event.id_old }, // Ensure transmission_id is set
         ])
     }
 
@@ -79,17 +76,17 @@ const FormTransUpdate = ({transmission}) =>  {
     const handleSubmit = async (e) => {
         e.preventDefault();
     
-        // Create the request data object for transmission update
+        // Create the request data object for event update
         const requestData = {
-            transmission_title: title,
-            transmission_desc: desc,
-            transmission_text: text,
+            event_title: title,
+            event_desc: desc,
+            event_text: text,
             id: 1000, // TODO: Replace with the correct logic if needed
         }
     
         try {
-            // Update the transmission
-            await axios.put(`https://localhost:8000/api/transmissions/${transmission.id_old}`, requestData, {
+            // Update the event
+            await axios.put(`https://localhost:8000/api/events/${event.id_old}`, requestData, {
                 headers: { "Content-Type": "application/json" },
             })
     
@@ -105,21 +102,18 @@ const FormTransUpdate = ({transmission}) =>  {
                 axios.post(`https://localhost:8000/api/tracks/`, track, {
                     headers: { "Content-Type": "application/json" },
                 })
-            );
+            )
     
             // Execute all requests in parallel
             await Promise.all([...updatePromises, ...createPromises]);
     
-            setMessage('Transmission and tracks updated successfully! 🎉')
+            setMessage('Event and tracks updated successfully! 🎉')
     
         } catch (error) {
             console.error("Error updating data:", error.response?.data || error.message)
             setMessage('Error updating transmission or tracks...')
         }
     }
-    
-
-
 
 
     return(
@@ -128,7 +122,7 @@ const FormTransUpdate = ({transmission}) =>  {
             <ImageBox src={defaultImage} />
 
             <div className='space-large'></div>
-            <h2>Trasmissione</h2>
+            <h2>Evento</h2>
 
                 <input
                     type='text'
@@ -259,4 +253,4 @@ const FormTransUpdate = ({transmission}) =>  {
     )
 }
 
-export default FormTransUpdate
+export default FormEventsUpdate

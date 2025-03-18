@@ -39,7 +39,8 @@ const Event = () => {
     const refEventId = event.id
 
     const tracks = tracksData.filter(track => 
-        track.tracks_id?.toString().startsWith(refEventId.toString())
+        track.tracks_id?.toString().startsWith(refEventId.toString()) &&
+        track.tracks_publication === "event"
       )
 
     return (
