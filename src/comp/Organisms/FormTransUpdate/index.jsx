@@ -57,7 +57,7 @@ const FormTransUpdate = ({transmission}) =>  {
     const addTrack = () => {
         setNewTracks((prevTracks) => [
             ...prevTracks,
-            { tracks_publication: "trans", tracks_title: "", tracks_desc: "", tracks_date: "", transmission_id: transmission.id_old }, // Ensure transmission_id is set
+            { tracks_publication: "trans", tracks_title: "", tracks_desc: "", tracks_date: "", transmission_id: transmission.id_old, trackFile: null }, // Ensure transmission_id is set
         ])
     }
 
@@ -78,6 +78,14 @@ const FormTransUpdate = ({transmission}) =>  {
         }
     }
 
+    const handleNewTrackFileChange = (index, file) => {
+        setNewTracks((prevTracks) => {
+            const updatedTracks = [...prevTracks]
+            updatedTracks[index] = { ...updatedTracks[index], trackFile: file }
+            return updatedTracks;
+        })
+    }
+
     // Handle image file change
     const handleImageChange = (e) => {
         const file = e.target.files[0]; // Get the selected file
@@ -95,6 +103,7 @@ const FormTransUpdate = ({transmission}) =>  {
         e.preventDefault();
 
         let uploadedImagePath = null;
+        let uploadedNewTrackPaths = [];
 
     // Step 1: Upload Image if selected
     if (image) {
@@ -115,6 +124,28 @@ const FormTransUpdate = ({transmission}) =>  {
             return;
         }
     }
+
+    // Step 2: Upload MP3 files for each track
+    for (let track of newTracks) {
+        if (track.trackFile) {
+            const trackFormData = new FormData();
+            trackFormData.append('files', track.trackFile); // Append the track file
+            
+            try {
+                const trackUploadResponse = await axios.post(
+                    "https://localhost:8000/api/files/tracks", // Ensure this is the correct API endpoint for MP3 files
+                    trackFormData,
+                    { headers: { "Content-Type": "multipart/form-data" } }
+                );
+                uploadedNewTrackPaths.push(trackUploadResponse.data.uploaded_files[0]); // Store the file path for each track
+            } catch (error) {
+                console.error("Error uploading track:", error.response ? error.response.data : error);
+                setMessage("Error uploading track...");
+                return;
+            }
+        }
+    }
+
     
         // Create the request data object for transmission update
         const requestData = {
@@ -139,10 +170,16 @@ const FormTransUpdate = ({transmission}) =>  {
             );
     
             // Create new tracks (POST requests)
-            const createPromises = newTracks.map((track) =>
-                axios.post(`https://localhost:8000/api/tracks/`, track, {
-                    headers: { "Content-Type": "application/json" },
-                })
+            const createPromises = newTracks.map((track, index) =>
+                axios.post(`https://localhost:8000/api/tracks/`, 
+                    {
+                        ...track,
+                        tracks_track: uploadedNewTrackPaths[index] || ""  // Assign the uploaded track path
+                    },
+                    {
+                        headers: { "Content-Type": "application/json" },
+                    }
+                )
             );
     
             // Execute all requests in parallel
@@ -216,6 +253,13 @@ const FormTransUpdate = ({transmission}) =>  {
                         
                         <div className="line"></div>
                         <h2>Nuova Traccia</h2>
+
+                        {/* MP3 File Upload for Track */}
+                        <input 
+                            type="file" 
+                            accept="audio/mp3" 
+                            onChange={(e) => handleNewTrackFileChange(index, e.target.files[0])} 
+                        />
 
                         <input
                             type="date"
