@@ -7,8 +7,7 @@ import Card from "../../comp/Organisms/Card"
 import Toogle from "../../comp/Organisms/Toogle"
 import Player from "../../comp/Mollecules/Player"
 
-// TODO: Temporary local import for development purposes.
-// Replace with dynamic track loading from the API once the front-end is integrated with the server.
+// TODO We could diplay this jingle in case no tracks file is found
 import jingle from '../../assets/audio/jingle.mp3';
 import defaultImage from '../../assets/images/transmissions/simple80s.jpg'
 
@@ -47,11 +46,15 @@ const Transmission = () => {
         console.log('tracks not found!')
     }
 
+    const imageUrl = transmission?.transmission_img 
+  ? `https://localhost:8000/api/files/images?file_name=${transmission.transmission_img}` 
+  : defaultImage;
+
 
     return(
        <Section>
 
-            <Carousel image = {defaultImage} width= '300px'/>
+            <Carousel image = {imageUrl} width= '300px'/>
 
             <Card
             title = {transmission.transmission_title}
@@ -69,8 +72,7 @@ const Transmission = () => {
                     <Toogle title={track.tracks_title} id={`track-${track.track_id}`}>
                     <p>{track.tracks_desc}</p>
                         <Player 
-                        //TODO replace jingle with a dynamic track
-                        track = {jingle}
+                        track = {`https://127.0.0.1:8000/api/files/tracks?file_name=${track.tracks_track}`}
                         id ={track.id}
                         />  
                     </Toogle>

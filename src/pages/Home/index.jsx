@@ -54,7 +54,7 @@ function Home() {
           <div key = {`line-${transmission.id_old}`} className='line'></div>
         </div>
         )} 
-        <div className="flex-horiz-center background-black"> <BtnCTA btnContent='...più trasmissioni' onClick={() => loadMore('transmissions')} /> </div>
+        <div className="flex-horiz-center background-black"> <BtnCTA btnContent='più trasmissioni' onClick={() => loadMore('transmissions')} /> </div>
       </Section>        
 
       <Section>
@@ -77,7 +77,7 @@ function Home() {
             <div className='line'></div>
           </div>
         )}
-        <div className="flex-horiz-center background-black"> <BtnCTA btnContent='...più eventi' onClick={() => loadMore('events')}/> </div>
+        <div className="flex-horiz-center background-black"> <BtnCTA btnContent='più eventi' onClick={() => loadMore('events')}/> </div>
       </Section>
 
       <Section className='background-cta'>

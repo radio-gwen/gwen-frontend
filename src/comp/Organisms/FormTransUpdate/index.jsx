@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import ImageBox from "../../Atoms/ImageBox"
 import Toogle from "../Toogle"
 import BtnCTA from "../../Atoms/BtnCTA"
@@ -16,6 +16,9 @@ const FormTransUpdate = ({transmission}) =>  {
     const [existingTracks, setExistingTracks] = useState([]);  // Holds tracks from API
     const [newTracks, setNewTracks] = useState([]);  // Holds newly added tracks
     const [message, setMessage] = useState('')
+    const [image, setImage] = useState(null)
+    const [imagePreview, setImagePreview] = useState(defaultImage)
+    const fileInputRef = useRef(null);
 
     useEffect(() => {
         if (transmission) {
@@ -75,15 +78,50 @@ const FormTransUpdate = ({transmission}) =>  {
         }
     }
 
+    // Handle image file change
+    const handleImageChange = (e) => {
+        const file = e.target.files[0]; // Get the selected file
+        if (file) {
+            setImage(file); // Set the image file to the state
+            setImagePreview(URL.createObjectURL(file))
+        }
+    };
+
+    const handleImageBoxClick = () => {
+        fileInputRef.current.click(); // Trigger file input click
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        let uploadedImagePath = null;
+
+    // Step 1: Upload Image if selected
+    if (image) {
+        const imageFormData = new FormData();
+        imageFormData.append('files', image); // Use 'files' as the field name, as expected by backend
+
+        try {
+            const uploadResponse = await axios.post(
+                "https://localhost:8000/api/files/images", // Ensure this is the correct API endpoint
+                imageFormData,
+                { headers: { "Content-Type": "multipart/form-data" } }
+            );
+
+            uploadedImagePath = uploadResponse.data.uploaded_files[0]; 
+        } catch (error) {
+            console.error("Error uploading image:", error.response ? error.response.data : error);
+            setMessage("Error uploading image...");
+            return;
+        }
+    }
     
         // Create the request data object for transmission update
         const requestData = {
             transmission_title: title,
             transmission_desc: desc,
             transmission_text: text,
+            transmission_img: uploadedImagePath || "",
             id: 1000, // TODO: Replace with the correct logic if needed
         }
     
@@ -125,10 +163,21 @@ const FormTransUpdate = ({transmission}) =>  {
     return(
         <form onSubmit = {handleSubmit}>
 
-            <ImageBox src={defaultImage} />
+            <div onClick={handleImageBoxClick} style={{ cursor: "pointer", display: "inline-block" }}>
+            <ImageBox src={imagePreview} />
+            </div>
 
             <div className='space-large'></div>
             <h2>Trasmissione</h2>
+
+                {/* Image input */}
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange} // Handle image selection
+                    ref={fileInputRef} // Connect input to useRef
+                    style={{ display: "none" }} // Hide the input field
+                />
 
                 <input
                     type='text'
@@ -208,6 +257,7 @@ const FormTransUpdate = ({transmission}) =>  {
                     <span>
                     <Toogle title={track.tracks_title} key={track.id} >
                         <span  className="gap">
+                            
                             <input
                                 type="date"
                                 value={track.tracks_date}
