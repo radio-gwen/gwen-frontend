@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import ImageBox from "../../Atoms/ImageBox"
 import Toogle from "../Toogle"
 import BtnCTA from "../../Atoms/BtnCTA"
@@ -15,6 +15,12 @@ const FormEventsUpdate = ({event}) => {
     const [existingTracks, setExistingTracks] = useState([]);  // Holds tracks from API
     const [newTracks, setNewTracks] = useState([]);  // Holds newly added tracks
     const [message, setMessage] = useState('')
+    const baseUrl = "https://127.0.0.1:8000/api/files/images?file_name="
+    const [image, setImage] = useState(null)
+    const [imagePreview, setImagePreview] = useState(
+        event?.event_img ? `${baseUrl}${event.event_img}` : defaultImage
+    )
+    const fileInputRef = useRef(null)
 
     useEffect(() => {
         if (event) {
@@ -26,7 +32,7 @@ const FormEventsUpdate = ({event}) => {
 
     // Fetch tracks related to this transmission
     useEffect(() => {
-        if (!event?.id_old) return; // Prevent fetching if id is undefined
+        if (!event?.id_old) return // Prevent fetching if id is undefined
 
         const fetchTracks = async () => {
             try {
@@ -51,7 +57,7 @@ const FormEventsUpdate = ({event}) => {
     const addTrack = () => {
         setNewTracks((prevTracks) => [
             ...prevTracks,
-            { tracks_publication: "event", tracks_title: "", tracks_desc: "", tracks_date: "", transmission_id: event.id_old }, // Ensure transmission_id is set
+            { tracks_publication: "event", tracks_title: "", tracks_desc: "", tracks_date: "", transmission_id: event.id_old, trackFile: null },
         ])
     }
 
@@ -72,16 +78,91 @@ const FormEventsUpdate = ({event}) => {
         }
     }
 
+    const handleNewTrackFileChange = (index, file) => {
+        setNewTracks((prevTracks) => {
+            const updatedTracks = [...prevTracks]
+            updatedTracks[index] = { ...updatedTracks[index], trackFile: file }
+            return updatedTracks;
+        })
+    }
+
+    const handleExistingTrackFileChange = (index, file) => {
+        setExistingTracks((prevTracks) => {
+            const updatedTracks = [...prevTracks]
+            updatedTracks[index] = { ...updatedTracks[index], trackFile: file }
+            return updatedTracks;
+        })
+    }
+
+    // Handle image file change
+    const handleImageChange = (e) => {
+        const file = e.target.files[0]; // Get the selected file
+        if (file) {
+            setImage(file); // Set the image file to the state
+            setImagePreview(URL.createObjectURL(file))
+        }
+    };
+
+    const handleImageBoxClick = () => {
+        fileInputRef.current.click(); // Trigger file input click
+    }
+
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-    
+        e.preventDefault()
+
+        let uploadedImagePath = null
+        let uploadedNewTrackPaths = []
+
+        // Step 1: Upload Image if selected
+        if (image) {
+            const imageFormData = new FormData();
+            imageFormData.append('files', image); // Use 'files' as the field name, as expected by backend
+
+            try {
+                const uploadResponse = await axios.post(
+                    "https://localhost:8000/api/files/images", // Ensure this is the correct API endpoint
+                    imageFormData,
+                    { headers: { "Content-Type": "multipart/form-data" } }
+                );
+
+                uploadedImagePath = uploadResponse.data.uploaded_files[0]; 
+            } catch (error) {
+                console.error("Error uploading image:", error.response ? error.response.data : error);
+                setMessage("Error uploading image...");
+                return;
+            }
+        }
+
+        // Step 2: Upload MP3 files for each track
+        for (let track of newTracks) {
+            if (track.trackFile) {
+                const trackFormData = new FormData();
+                trackFormData.append('files', track.trackFile); // Append the track file
+                
+                try {
+                    const trackUploadResponse = await axios.post(
+                        "https://localhost:8000/api/files/tracks", // Ensure this is the correct API endpoint for MP3 files
+                        trackFormData,
+                        { headers: { "Content-Type": "multipart/form-data" } }
+                    );
+                    uploadedNewTrackPaths.push(trackUploadResponse.data.uploaded_files[0]); // Store the file path for each track
+                } catch (error) {
+                    console.error("Error uploading track:", error.response ? error.response.data : error);
+                    setMessage("Error uploading track...");
+                    return;
+                }
+            }
+        }
+
+
         // Create the request data object for event update
         const requestData = {
             event_title: title,
             event_desc: desc,
             event_text: text,
-            id: 1000, // TODO: Replace with the correct logic if needed
+            event_img: uploadedImagePath || event.event_img,
+            id: 1000, // TODO: to be cancelled 
         }
     
         try {
@@ -91,18 +172,49 @@ const FormEventsUpdate = ({event}) => {
             })
     
             // Update existing tracks (PUT requests)
-            const updatePromises = existingTracks.map((track) =>
-                axios.put(`https://localhost:8000/api/tracks/${track.id}`, track, {
-                    headers: { "Content-Type": "application/json" },
-                })
-            );
+            const updatePromises = existingTracks.map(async (track, index) => {
+                let uploadedTrackPath = track.tracks_track; // Keep existing path if no new file
+            
+                // Check if a new file was uploaded for this track
+                if (track.trackFile) {
+                    const trackFormData = new FormData();
+                    trackFormData.append("files", track.trackFile)
+            
+                    try {
+                        const trackUploadResponse = await axios.post(
+                            "https://localhost:8000/api/files/tracks",
+                            trackFormData,
+                            { headers: { "Content-Type": "multipart/form-data" } }
+                        );
+                        uploadedTrackPath = trackUploadResponse.data.uploaded_files[0] // Get new file path
+                    } catch (error) {
+                        console.error("Error uploading track file:", error.response?.data || error)
+                        setMessage("Error uploading track file...")
+                        return;
+                    }
+                }
+            
+                // Now update the track with the new file path
+                return axios.put(`https://localhost:8000/api/tracks/${track.id}`, 
+                    {
+                        ...track,
+                        tracks_track: uploadedTrackPath, // Ensure the file path is updated
+                    },
+                    { headers: { "Content-Type": "application/json" } }
+                );
+            })
     
             // Create new tracks (POST requests)
-            const createPromises = newTracks.map((track) =>
-                axios.post(`https://localhost:8000/api/tracks/`, track, {
-                    headers: { "Content-Type": "application/json" },
-                })
-            )
+            const createPromises = newTracks.map((track, index) =>
+                axios.post(`https://localhost:8000/api/tracks/`, 
+                    {
+                        ...track,
+                        tracks_track: uploadedNewTrackPaths[index] || ""  // Assign the uploaded track path
+                    },
+                    {
+                        headers: { "Content-Type": "application/json" },
+                    })
+            );
     
             // Execute all requests in parallel
             await Promise.all([...updatePromises, ...createPromises]);
@@ -119,10 +231,21 @@ const FormEventsUpdate = ({event}) => {
     return(
         <form onSubmit = {handleSubmit}>
 
-            <ImageBox src={defaultImage} />
+            <div onClick={handleImageBoxClick} style={{ cursor: "pointer", display: "inline-block" }}>
+                <ImageBox src={imagePreview} />
+            </div>
 
             <div className='space-large'></div>
             <h2>Evento</h2>
+
+                {/* Image input */}
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange} // Handle image selection
+                    ref={fileInputRef} // Connect input to useRef
+                    style={{ display: "none" }} // Hide the input field
+                />
 
                 <input
                     type='text'
@@ -161,6 +284,13 @@ const FormEventsUpdate = ({event}) => {
                         
                         <div className="line"></div>
                         <h2>Nuova Traccia</h2>
+
+                        {/* MP3 File Upload for Track */}
+                        <input 
+                            type="file" 
+                            accept="audio/mp3" 
+                            onChange={(e) => handleNewTrackFileChange(index, e.target.files[0])} 
+                        />
 
                         <input
                             type="date"
@@ -202,6 +332,13 @@ const FormEventsUpdate = ({event}) => {
                     <span>
                     <Toogle title={track.tracks_title} key={track.id} >
                         <span  className="gap">
+
+                            <input 
+                                type="file" 
+                                accept="audio/mp3" 
+                                onChange={(e) => handleExistingTrackFileChange(index, e.target.files[0])} 
+                            />
+
                             <input
                                 type="date"
                                 value={track.tracks_date}

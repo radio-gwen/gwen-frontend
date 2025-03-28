@@ -9,19 +9,18 @@ import BtnPrimary from "../../Atoms/BtnPrimary"
 import defaultImage from "../../../assets/images/transmissions/simple80s.jpg"
 
 const FormTransUpdate = ({transmission}) =>  {
-
     const [title, setTitle] = useState(transmission?.transmission_title || "")
     const [desc, setDesc] = useState(transmission?.transmission_desc || "")
     const [text, setText] = useState(transmission?.transmission_text || "")
     const [existingTracks, setExistingTracks] = useState([]);  // Holds tracks from API
     const [newTracks, setNewTracks] = useState([]);  // Holds newly added tracks
     const [message, setMessage] = useState('')
-    const baseUrl = "https://127.0.0.1:8000/api/files/images?file_name=";
+    const baseUrl = "https://127.0.0.1:8000/api/files/images?file_name="
     const [image, setImage] = useState(null)
-const [imagePreview, setImagePreview] = useState(
-    transmission?.transmission_img ? `${baseUrl}${transmission.transmission_img}` : defaultImage
-);
-    const fileInputRef = useRef(null);
+    const [imagePreview, setImagePreview] = useState(
+        transmission?.transmission_img ? `${baseUrl}${transmission.transmission_img}` : defaultImage
+    )
+    const fileInputRef = useRef(null)
 
     useEffect(() => {
         if (transmission) {
@@ -34,7 +33,7 @@ const [imagePreview, setImagePreview] = useState(
 
     // Fetch tracks related to this transmission
     useEffect(() => {
-        if (!transmission?.id_old) return; // Prevent fetching if id is undefined
+        if (!transmission?.id_old) return // Prevent fetching if id is undefined
 
         const fetchTracks = async () => {
             try {
@@ -85,7 +84,7 @@ const [imagePreview, setImagePreview] = useState(
         setNewTracks((prevTracks) => {
             const updatedTracks = [...prevTracks]
             updatedTracks[index] = { ...updatedTracks[index], trackFile: file }
-            return updatedTracks;
+            return updatedTracks
         })
     }
 
@@ -93,7 +92,7 @@ const [imagePreview, setImagePreview] = useState(
         setExistingTracks((prevTracks) => {
             const updatedTracks = [...prevTracks]
             updatedTracks[index] = { ...updatedTracks[index], trackFile: file }
-            return updatedTracks;
+            return updatedTracks
         })
     }
 
@@ -107,14 +106,14 @@ const [imagePreview, setImagePreview] = useState(
     };
 
     const handleImageBoxClick = () => {
-        fileInputRef.current.click(); // Trigger file input click
-    };
+        fileInputRef.current.click() // Trigger file input click
+    }
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
 
-        let uploadedImagePath = null;
-        let uploadedNewTrackPaths = [];
+        let uploadedImagePath = null
+        let uploadedNewTrackPaths = []
 
     // Step 1: Upload Image if selected
     if (image) {
@@ -164,7 +163,7 @@ const [imagePreview, setImagePreview] = useState(
             transmission_desc: desc,
             transmission_text: text,
             transmission_img: uploadedImagePath || transmission.transmission_img,
-            id: 1000, // TODO: Replace with the correct logic if needed
+            id: 1000, // TODO: to be cancelled 
         }
     
         try {
@@ -180,7 +179,7 @@ const [imagePreview, setImagePreview] = useState(
                 // Check if a new file was uploaded for this track
                 if (track.trackFile) {
                     const trackFormData = new FormData();
-                    trackFormData.append("files", track.trackFile);
+                    trackFormData.append("files", track.trackFile)
             
                     try {
                         const trackUploadResponse = await axios.post(
@@ -188,10 +187,10 @@ const [imagePreview, setImagePreview] = useState(
                             trackFormData,
                             { headers: { "Content-Type": "multipart/form-data" } }
                         );
-                        uploadedTrackPath = trackUploadResponse.data.uploaded_files[0]; // Get new file path
+                        uploadedTrackPath = trackUploadResponse.data.uploaded_files[0] // Get new file path
                     } catch (error) {
-                        console.error("Error uploading track file:", error.response?.data || error);
-                        setMessage("Error uploading track file...");
+                        console.error("Error uploading track file:", error.response?.data || error)
+                        setMessage("Error uploading track file...")
                         return;
                     }
                 }
@@ -203,8 +202,8 @@ const [imagePreview, setImagePreview] = useState(
                         tracks_track: uploadedTrackPath, // Ensure the file path is updated
                     },
                     { headers: { "Content-Type": "application/json" } }
-                );
-            });
+                )
+            })
     
             // Create new tracks (POST requests)
             const createPromises = newTracks.map((track, index) =>
@@ -338,11 +337,11 @@ const [imagePreview, setImagePreview] = useState(
                     <Toogle title={track.tracks_title} key={track.id} >
                         <span  className="gap">
                             
-                        <input 
-                            type="file" 
-                            accept="audio/mp3" 
-                            onChange={(e) => handleExistingTrackFileChange(index, e.target.files[0])} 
-                        />
+                            <input 
+                                type="file" 
+                                accept="audio/mp3" 
+                                onChange={(e) => handleExistingTrackFileChange(index, e.target.files[0])} 
+                            />
 
                             <input
                                 type="date"
