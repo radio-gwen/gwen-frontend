@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useState } from "react"
-import { useRef } from "react";
+import { useRef } from "react"
 
 import BtnCTA from "../../Atoms/BtnCTA"
 import BtnPrimary from "../../Atoms/BtnPrimary"
@@ -63,7 +63,7 @@ const FormTransNew = () => {
 
     const handleImageBoxClick = () => {
         fileInputRef.current.click(); // Trigger file input click
-    };
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -120,14 +120,14 @@ const FormTransNew = () => {
             transmission_label: programType.join(", "),
             transmission_img: uploadedImagePath || "", // Include uploaded image path if available
             id: 1000,
-        };
+        }
     
         try {
             const transResponse = await axios.post(
                 "https://localhost:8000/api/transmissions/",
                 requestTransData,
                 { headers: { "Content-Type": "application/json" } }
-            );
+            )
     
             const newTransmissionId = transResponse.data.id_old;
     

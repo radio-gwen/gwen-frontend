@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useState } from "react"
+import { useRef } from "react"
 
 import BtnCTA from "../../Atoms/BtnCTA"
 import BtnPrimary from "../../Atoms/BtnPrimary"
@@ -15,6 +16,10 @@ const FormEventNew = () => {
     const [programType, setProgramType] = useState([])
     const [tracks, setTracks] = useState([])
     const [message, setMessage] = useState("")
+    const [image, setImage] = useState(null)
+    const [imagePreview, setImagePreview] = useState(defaultImage)
+    const fileInputRef = useRef(null);
+
 
     const handleProgramTypeChange = (event, type) => {
         setProgramType((prev) =>
@@ -28,7 +33,7 @@ const FormEventNew = () => {
     const addTrack = () => {
         setTracks((prevTracks) => [
             ...prevTracks,
-            { trackTitle: "", trackDesc: "", trackDate: "" },
+            { trackTitle: "", trackDesc: "", trackDate: "", trackFile: null },
         ])
     }
 
@@ -41,45 +46,104 @@ const FormEventNew = () => {
         })
     }
 
+    const handleTrackFileChange = (index, file) => {
+        setTracks((prevTracks) => {
+            const updatedTracks = [...prevTracks]
+            updatedTracks[index] = { ...updatedTracks[index], trackFile: file }
+            return updatedTracks;
+        })
+    }
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0]
+        if (file) {
+            setImage(file)
+            setImagePreview(URL.createObjectURL(file))
+        }
+    }
+
+    const handleImageBoxClick = () => {
+        fileInputRef.current.click(); // Trigger file input click
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Create the request event data object
+        let uploadedImagePath = null;
+        let uploadedTrackPaths = [];
+
+        // Step 1: Upload Image if selected
+        if (image) {
+            const imageFormData = new FormData();
+            imageFormData.append('files', image); // Use 'files' as the field name, as expected by backend
+    
+            try {
+                const uploadResponse = await axios.post(
+                    "https://localhost:8000/api/files/images", // Ensure this is the correct API endpoint
+                    imageFormData,
+                    { headers: { "Content-Type": "multipart/form-data" } }
+                );
+    
+                uploadedImagePath = uploadResponse.data.uploaded_files[0]; 
+            } catch (error) {
+                console.error("Error uploading image:", error.response ? error.response.data : error);
+                setMessage("Error uploading image...");
+                return;
+            }
+        }
+
+        // Step 2: Upload MP3 files for each track
+        for (let track of tracks) {
+            if (track.trackFile) {
+                const trackFormData = new FormData();
+                trackFormData.append('files', track.trackFile); // Append the track file
+                
+                try {
+                    const trackUploadResponse = await axios.post(
+                        "https://localhost:8000/api/files/tracks", // Ensure this is the correct API endpoint for MP3 files
+                        trackFormData,
+                        { headers: { "Content-Type": "multipart/form-data" } }
+                    );
+                    uploadedTrackPaths.push(trackUploadResponse.data.uploaded_files[0]); // Store the file path for each track
+                } catch (error) {
+                    console.error("Error uploading track:", error.response ? error.response.data : error);
+                    setMessage("Error uploading track...");
+                    return;
+                }
+            }
+        }
+
+        // Step 3: Create the event data
         const requestTransData = {
             event_title: title,
             event_desc: desc,
             event_text: text,
             event_label: programType.join(", "),
-            //TODO Cancel the column id in transmission... using only id_old and rename it into id
+            event_img: uploadedImagePath || "",
             id: 1000,
         }
-
 
         try {
             const transResponse = await axios.post(
                 "https://localhost:8000/api/events/",
                 requestTransData,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }
+                { headers: { "Content-Type": "application/json" } }
             )
 
             const newEventId = transResponse.data.id_old
 
             // Create the tracks array of objects
-            for (let track of tracks) {
+            for (let [index, track] of tracks.entries()) {
                 const requestTracksData = {
-                    tracks_publication: "trans",
+                    tracks_publication: "event",
                     tracks_title: track.trackTitle,
                     tracks_desc: track.trackDesc,
-                    tracks_img: "track_img", // Adjust or implement image upload later
-                    tracks_type: "tracks_type", // Adjust as needed
+                    tracks_img: uploadedImagePath || "",
+                    tracks_type: "tracks_type", 
                     tracks_date: track.trackDate || "2023-11-07",
                     tracks_label: null,
-                    tracks_track: "trans128_track_01_15718.mp3",
-                    transmission_id: newEventId, // Link to the event
+                    tracks_track: uploadedTrackPaths[index] || "",
+                    transmission_id: newEventId,
                     deleted: false,
                 };
 
@@ -102,13 +166,23 @@ const FormEventNew = () => {
         <form onSubmit={handleSubmit}>
             <div className="gap">                
 
-                <ImageBox src={defaultImage} />
+                <div onClick={handleImageBoxClick} style={{ cursor: "pointer", display: "inline-block" }}>
+                    <ImageBox src={imagePreview} />
+                </div>
+
                 <div className="space-medium"></div>
                 <h2>Nuovo Evento</h2>
 
+                {/* IMAGE UPLOAD */}
+                <input 
+                    type="file" 
+                    accept="image/*" 
+                    onChange={handleImageChange} 
+                    ref={fileInputRef} // Connect input to useRef
+                    style={{ display: "none" }} // Hide the input field
+                    />
+
                 <div className='flex-horiz'>
-                    
-                        
                         <input
                             type="checkbox"
                             name="programType"
@@ -162,16 +236,13 @@ const FormEventNew = () => {
                 <div className="space-medium"></div>
                 {tracks.map((track, index) => (
                     <span key={index} className="gap">
-
-                        <div className="space-medium"></div>
-                        
                         <div className="space-medium"></div>
 
                         <h2>Nuova Traccia</h2>
                         <div className="space-small"></div>
 
                         <input
-                            placeholder="titolo traccia"
+                            placeholder="Titolo traccia"
                             type="text"
                             value={track.trackTitle}
                             onChange={(e) =>
@@ -198,7 +269,7 @@ const FormEventNew = () => {
                         />
 
                         <input
-                            placeholder="descrizione traccia"
+                            placeholder="Descrizione traccia"
                             type="text"
                             value={track.trackDesc}
                             onChange={(e) =>
@@ -210,6 +281,12 @@ const FormEventNew = () => {
                             }
                         />
 
+                        {/* MP3 File Upload for Track */}
+                        <input 
+                            type="file" 
+                            accept="audio/mp3" 
+                            onChange={(e) => handleTrackFileChange(index, e.target.files[0])} 
+                        />
                         
                     </span>
                 ))}

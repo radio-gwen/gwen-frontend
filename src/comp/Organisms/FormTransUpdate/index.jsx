@@ -16,8 +16,11 @@ const FormTransUpdate = ({transmission}) =>  {
     const [existingTracks, setExistingTracks] = useState([]);  // Holds tracks from API
     const [newTracks, setNewTracks] = useState([]);  // Holds newly added tracks
     const [message, setMessage] = useState('')
+    const baseUrl = "https://127.0.0.1:8000/api/files/images?file_name=";
     const [image, setImage] = useState(null)
-    const [imagePreview, setImagePreview] = useState(defaultImage)
+const [imagePreview, setImagePreview] = useState(
+    transmission?.transmission_img ? `${baseUrl}${transmission.transmission_img}` : defaultImage
+);
     const fileInputRef = useRef(null);
 
     useEffect(() => {
@@ -80,6 +83,14 @@ const FormTransUpdate = ({transmission}) =>  {
 
     const handleNewTrackFileChange = (index, file) => {
         setNewTracks((prevTracks) => {
+            const updatedTracks = [...prevTracks]
+            updatedTracks[index] = { ...updatedTracks[index], trackFile: file }
+            return updatedTracks;
+        })
+    }
+
+    const handleExistingTrackFileChange = (index, file) => {
+        setExistingTracks((prevTracks) => {
             const updatedTracks = [...prevTracks]
             updatedTracks[index] = { ...updatedTracks[index], trackFile: file }
             return updatedTracks;
@@ -152,7 +163,7 @@ const FormTransUpdate = ({transmission}) =>  {
             transmission_title: title,
             transmission_desc: desc,
             transmission_text: text,
-            transmission_img: uploadedImagePath || "",
+            transmission_img: uploadedImagePath || transmission.transmission_img,
             id: 1000, // TODO: Replace with the correct logic if needed
         }
     
@@ -163,11 +174,37 @@ const FormTransUpdate = ({transmission}) =>  {
             })
     
             // Update existing tracks (PUT requests)
-            const updatePromises = existingTracks.map((track) =>
-                axios.put(`https://localhost:8000/api/tracks/${track.id}`, track, {
-                    headers: { "Content-Type": "application/json" },
-                })
-            );
+            const updatePromises = existingTracks.map(async (track, index) => {
+                let uploadedTrackPath = track.tracks_track; // Keep existing path if no new file
+            
+                // Check if a new file was uploaded for this track
+                if (track.trackFile) {
+                    const trackFormData = new FormData();
+                    trackFormData.append("files", track.trackFile);
+            
+                    try {
+                        const trackUploadResponse = await axios.post(
+                            "https://localhost:8000/api/files/tracks",
+                            trackFormData,
+                            { headers: { "Content-Type": "multipart/form-data" } }
+                        );
+                        uploadedTrackPath = trackUploadResponse.data.uploaded_files[0]; // Get new file path
+                    } catch (error) {
+                        console.error("Error uploading track file:", error.response?.data || error);
+                        setMessage("Error uploading track file...");
+                        return;
+                    }
+                }
+            
+                // Now update the track with the new file path
+                return axios.put(`https://localhost:8000/api/tracks/${track.id}`, 
+                    {
+                        ...track,
+                        tracks_track: uploadedTrackPath, // Ensure the file path is updated
+                    },
+                    { headers: { "Content-Type": "application/json" } }
+                );
+            });
     
             // Create new tracks (POST requests)
             const createPromises = newTracks.map((track, index) =>
@@ -178,8 +215,7 @@ const FormTransUpdate = ({transmission}) =>  {
                     },
                     {
                         headers: { "Content-Type": "application/json" },
-                    }
-                )
+                    })
             );
     
             // Execute all requests in parallel
@@ -302,6 +338,12 @@ const FormTransUpdate = ({transmission}) =>  {
                     <Toogle title={track.tracks_title} key={track.id} >
                         <span  className="gap">
                             
+                        <input 
+                            type="file" 
+                            accept="audio/mp3" 
+                            onChange={(e) => handleExistingTrackFileChange(index, e.target.files[0])} 
+                        />
+
                             <input
                                 type="date"
                                 value={track.tracks_date}

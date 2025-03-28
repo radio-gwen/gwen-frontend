@@ -36,17 +36,21 @@ const Event = () => {
     }
 
     // We look for the refTransmission id
-    const refEventId = event.id
+    const refEventId = event.id_old
 
     const tracks = tracksData.filter(track => 
-        track.tracks_id?.toString().startsWith(refEventId.toString()) &&
+        track.transmission_id?.toString().startsWith(refEventId.toString()) &&
         track.tracks_publication === "event"
       )
 
+      const imageUrl = event?.event_img 
+      ? `https://localhost:8000/api/files/images?file_name=${event.event_img}` 
+      : defaultImage;
+
     return (
         <Section>
-            <h1>{event.event_title}</h1>
-            <Carousel image={defaultImage} />
+            <Carousel image = {imageUrl} width= '300px'/>
+
             <Card
             title = {event.event_title}
             desc = {event.event_desc}
@@ -61,7 +65,10 @@ const Event = () => {
                     <div className='line'></div>
                     <Toogle title={track.tracks_title} id={`track-${track.id}`}>
                         <p>{track.tracks_desc}</p>
-                        <Player track = {jingle}/>
+                        <Player 
+                        track = {`https://127.0.0.1:8000/api/files/tracks?file_name=${track.tracks_track}`}
+                        id ={track.id}
+                        />  
                     </Toogle>
                 </div>
             )}
