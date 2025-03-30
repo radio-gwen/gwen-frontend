@@ -4,6 +4,9 @@ import ImageBox from "../../Atoms/ImageBox"
 import Toogle from "../Toogle"
 import BtnCTA from "../../Atoms/BtnCTA"
 import BtnPrimary from "../../Atoms/BtnPrimary"
+import BtnIcon from '../../Atoms/BtnIcon'
+
+import iconMusic from '../../../assets/images/icons/music'
 
 // TODO replace local asset with dynamic ones
 import defaultImage from "../../../assets/images/transmissions/simple80s.jpg"
@@ -20,7 +23,8 @@ const FormEventsUpdate = ({event}) => {
     const [imagePreview, setImagePreview] = useState(
         event?.event_img ? `${baseUrl}${event.event_img}` : defaultImage
     )
-    const fileInputRef = useRef(null)
+    const imageInputRef = useRef(null)
+    const audioInputRefs = useRef([]);
 
     useEffect(() => {
         if (event) {
@@ -104,8 +108,17 @@ const FormEventsUpdate = ({event}) => {
     };
 
     const handleImageBoxClick = () => {
-        fileInputRef.current.click(); // Trigger file input click
+        imageInputRef.current.click(); // Trigger file input click
     }
+
+    // Function to trigger a file input click
+    const triggerFileInput = (index = null, type = "image") => {
+        if (type === "image") {
+            imageInputRef.current.click();
+        } else if (type === "audio" && audioInputRefs.current[index]) {
+            audioInputRefs.current[index].click()
+        }
+    };
 
 
     const handleSubmit = async (e) => {
@@ -243,7 +256,7 @@ const FormEventsUpdate = ({event}) => {
                     type="file"
                     accept="image/*"
                     onChange={handleImageChange} // Handle image selection
-                    ref={fileInputRef} // Connect input to useRef
+                    ref={imageInputRef} // Connect input to useRef
                     style={{ display: "none" }} // Hide the input field
                 />
 
@@ -285,11 +298,22 @@ const FormEventsUpdate = ({event}) => {
                         <div className="line"></div>
                         <h2>Nuova Traccia</h2>
 
-                        {/* MP3 File Upload for Track */}
+                        <div className='flex-horiz pad-0'>
+                            <BtnIcon 
+                            icon={iconMusic}
+                            onClick={() => triggerFileInput(index, "audio")}
+                            />
+
+                            <span>{newTracks[index]?.trackFile ? newTracks[index].trackFile.name : "No file selected"}</span>
+
+                        </div>
+
                         <input 
+                            ref={(el) => (audioInputRefs.current[index] = el)} // Assign ref dynamically
                             type="file" 
                             accept="audio/mp3" 
                             onChange={(e) => handleNewTrackFileChange(index, e.target.files[0])} 
+                            style={{ display: "none" }} 
                         />
 
                         <input
@@ -333,11 +357,25 @@ const FormEventsUpdate = ({event}) => {
                     <Toogle title={track.tracks_title} key={track.id} >
                         <span  className="gap">
 
-                            <input 
-                                type="file" 
-                                accept="audio/mp3" 
-                                onChange={(e) => handleExistingTrackFileChange(index, e.target.files[0])} 
+                        <div className='flex-horiz pad-0'>
+
+                            <BtnIcon 
+                            icon={iconMusic}
+                            onClick={() => triggerFileInput(index, "audio")}
                             />
+
+                            <span>{track.tracks_track}</span>
+
+                        </div>
+
+
+                        <input 
+                            ref={(el) => (audioInputRefs.current[index] = el)} // Assign ref dynamically
+                            type="file" 
+                            accept="audio/mp3" 
+                            onChange={(e) => handleNewTrackFileChange(index, e.target.files[0])} 
+                            style={{ display: "none" }} 
+                        />
 
                             <input
                                 type="date"

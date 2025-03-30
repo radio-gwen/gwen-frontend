@@ -1,6 +1,6 @@
-const BtnPrimary = ({content, onClick}) => {
+const BtnPrimary = ({content, onClick, isActive}) => {
     return(
-        <div className='btn-primary' onClick={onClick}>
+        <div className={`btn-primary ${isActive ? 'active' : ''}`} onClick={onClick}>
             {content}
         </div>
     )

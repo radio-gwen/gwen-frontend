@@ -35,33 +35,40 @@ function Home() {
   return (
     <div>
       <Section>
-        <H1 content='Trasmissioni'/>
-        <div className='line'></div>
+        <H1 content="Trasmissioni" />
+        <div className="line"></div>
 
-         {transmissionsData.slice(0, visibleTransmissions).map( transmission => 
-          <div key = {`div-${transmission.transmission_id_old}`}>
-          <CardImage 
-            key = {transmission.id_old}
-            title = {transmission.transmission_title}
-            desc = {transmission.transmission_desc}
-            btnContent = 'Vai!'
-            /*TODO Fetch transmission.image*/
-            imgSrc={defaultImage}
-            imgDesc={transmission.transmission_imgDesc}
-            url = {`/transmission/${String(transmission.id_old)}`}
-            label = {transmission.transmission_label}
-          />
-          <div key = {`line-${transmission.id_old}`} className='line'></div>
+        {transmissionsData
+          .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at)) // Sort by updated_at DESC
+          .slice(0, visibleTransmissions)
+          .map((transmission) => (
+            <div key={`div-${transmission.transmission_id_old}`}>
+              <CardImage
+                key={transmission.id_old}
+                title={transmission.transmission_title}
+                desc={transmission.transmission_desc}
+                btnContent="Vai!"
+                imgSrc={defaultImage} // TODO Fetch transmission.image
+                imgDesc={transmission.transmission_imgDesc}
+                url={`/transmission/${String(transmission.id_old)}`}
+                label={transmission.transmission_label}
+              />
+              <div key={`line-${transmission.id_old}`} className="line"></div>
+            </div>
+          ))}
+
+        <div className="flex-horiz-center background-black">
+          <BtnCTA btnContent="più trasmissioni" onClick={() => loadMore("transmissions")} />
         </div>
-        )} 
-        <div className="flex-horiz-center background-black"> <BtnCTA btnContent='più trasmissioni' onClick={() => loadMore('transmissions')} /> </div>
-      </Section>        
+      </Section>    
 
       <Section>
         <H1 content='Eventi' />
         
         <div className='line'></div>
-        {eventsData.slice(0, visibleEvents).map( event =>
+        {eventsData
+        .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at)) // Sort by updated_at DESC
+        .slice(0, visibleEvents).map( event =>
           <div key = {`div-${event.id_old}`}>
             <CardToogle
             key ={event.id_old}

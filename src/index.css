@@ -163,6 +163,10 @@ a{
   cursor: pointer;
 }
 
+.pad-0{
+  padding: 0 !important;
+}
+
 .open{
   opacity: 1;
   visibility: visible;
@@ -402,6 +406,16 @@ h3{
   margin-top: var(--spacing-small);
 }
 
+.btn-primary.active{
+  background-color: var(--cta-color);
+  box-shadow: var(--box-shadow-hover);
+}
+
+.btn-primary:hover{
+  background-color: var(--cta-color);
+  box-shadow: var(--box-shadow-hover);
+}
+
 .btn-tertiary{
   all: unset;
   display: flex;
@@ -448,13 +462,15 @@ h3{
 .btn-icon{
   width: 24px;
   height: 24px;
-  /*border: solid var(--line) var(--black);*/
+  border: solid var(--line) var(--black);
   border-radius: var(--border-radius);
-  padding: 5px 9px 7px 4px;
+  padding: 10px;
+  overflow: hidden;
 }
 
 .btn-icon:hover{
   background-color: var(--cta-color);
+  cursor: pointer;
 }
 
 .line{
@@ -545,6 +561,10 @@ h3{
   width: 150px;
   height: 150px;
   overflow: hidden;
+}
+
+.image-box:hover{
+  cursor: pointer;
 }
 
 .space-medium{

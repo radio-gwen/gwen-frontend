@@ -5,9 +5,11 @@ import { useRef } from "react"
 import BtnCTA from "../../Atoms/BtnCTA"
 import BtnPrimary from "../../Atoms/BtnPrimary"
 import ImageBox from "../../Atoms/ImageBox"
+import BtnIcon from '../../Atoms/BtnIcon'
 
 // TODO replace local asset with dynamic ones
 import defaultImage from "../../../assets/images/transmissions/simple80s.jpg"
+import iconMusic from '../../../assets/images/icons/music'
 
 const FormTransNew = () => {
     const [title, setTitle] = useState("")
@@ -18,7 +20,8 @@ const FormTransNew = () => {
     const [message, setMessage] = useState("")
     const [image, setImage] = useState(null)
     const [imagePreview, setImagePreview] = useState(defaultImage)
-    const fileInputRef = useRef(null);
+    const imageInputRef = useRef(null);
+    const audioInputRefs = useRef([]);
 
     const handleProgramTypeChange = (event, type) => {
         setProgramType((prev) =>
@@ -62,8 +65,17 @@ const FormTransNew = () => {
     }
 
     const handleImageBoxClick = () => {
-        fileInputRef.current.click(); // Trigger file input click
+        imageInputRef.current.click(); // Trigger file input click
     }
+
+    // Function to trigger a file input click
+    const triggerFileInput = (index = null, type = "image") => {
+        if (type === "image") {
+            imageInputRef.current.click();
+        } else if (type === "audio" && audioInputRefs.current[index]) {
+            audioInputRefs.current[index].click()
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -176,7 +188,7 @@ const FormTransNew = () => {
                     type="file" 
                     accept="image/*" 
                     onChange={handleImageChange} 
-                    ref={fileInputRef} // Connect input to useRef
+                    ref={imageInputRef} // Connect input to useRef
                     style={{ display: "none" }} // Hide the input field
                     />
                 
@@ -237,6 +249,24 @@ const FormTransNew = () => {
                         <h2>Nuova Traccia</h2>
                         <div className="space-small"></div>
 
+                        <div className='flex-horiz pad-0'>
+                            <BtnIcon 
+                            icon={iconMusic}
+                            onClick={() => triggerFileInput(index, "audio")}
+                            />
+
+                            <span>{tracks[index]?.trackFile ? tracks[index].trackFile.name : "No file selected"}</span>
+
+                        </div>
+
+                        <input 
+                            ref={(el) => (audioInputRefs.current[index] = el)} // Assign ref dynamically
+                            type="file" 
+                            accept="audio/mp3" 
+                            onChange={(e) => handleTrackFileChange(index, e.target.files[0])} 
+                            style={{ display: "none" }} 
+                        />
+
                         <input
                             placeholder="Titolo traccia"
                             type="text"
@@ -259,12 +289,6 @@ const FormTransNew = () => {
                             onChange={(e) => handleTrackChange(index, "trackDesc", e.target.value)}
                         />
 
-                        {/* MP3 File Upload for Track */}
-                        <input 
-                            type="file" 
-                            accept="audio/mp3" 
-                            onChange={(e) => handleTrackFileChange(index, e.target.files[0])} 
-                        />
                     </span>
                 ))}
 

@@ -1,3 +1,5 @@
+import BtnPrimary from '../../Atoms/BtnPrimary'
+
 const TagSelector = ({ activeTags, setActiveTags }) => {
 
         
@@ -14,8 +16,16 @@ const TagSelector = ({ activeTags, setActiveTags }) => {
 
     return(
         <div className='flex-horiz'>
-            <div className={`tag-selector ${isActive('Music') ? 'background-cta' : ''}`} onClick={() => toggleTag('Music')}>Music</div>
-            <div className={`tag-selector ${isActive('Talk') ? 'background-cta' : ''}`} onClick={() => toggleTag('Talk')}>Talk</div>
+            <BtnPrimary 
+            content={'Music'}
+            onClick={() => toggleTag('Music')}
+            isActive={isActive('Music')}
+            />
+            <BtnPrimary 
+            content={'Talk'}
+            onClick={() => toggleTag('Talk')}
+            isActive={isActive('Talk')}
+            />
         </div>
     )
 }
