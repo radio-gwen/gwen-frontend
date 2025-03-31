@@ -92,6 +92,10 @@ table {
   /* Box Shadows*/
   --box-shadow-default: 2px -2px;
   --box-shadow-hover: 4px -4px;
+  --box-shadow-color: 0 0 20px var(--cta-color), 
+  0 0 20px var(--cta-color), 
+  0 0 20px var(--cta-color), 
+  0 0 20px var(--cta-color);
 
 }
 
@@ -189,6 +193,10 @@ a{
   display: none;
 }
 
+.margin-small{
+  margin: var(--spacing-small);
+}
+
 .flex-horiz{
   display: flex;
   gap: var(--spacing-small);
@@ -198,6 +206,15 @@ a{
 }
 
 .flex-horiz-center{
+  display: flex;
+  gap: var(--spacing-small);
+  align-items: center;
+  justify-content: center;
+  width: -webkit-fill-available;
+  padding: var(--spacing-small);
+}
+
+.flex-horiz-right{
   display: flex;
   gap: var(--spacing-small);
   align-items: center;
@@ -729,6 +746,11 @@ input[type="checkbox"]:checked::before {
   flex: 1 1 300px;
   max-width: 400px;
   box-sizing: border-box;
+}
+
+.card-transmission:hover{
+  box-shadow: var(--box-shadow-color);
+  transition: 0.3s ease-in-out;
 }
 
 .links-list{

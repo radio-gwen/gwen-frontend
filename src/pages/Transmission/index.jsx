@@ -65,7 +65,10 @@ const Transmission = () => {
             label = {transmission.transmission_label}
             />
 
-            {tracks.map( (track) =>  
+            {tracks
+            .filter(track => track.deleted === false && 
+                (!track.to_be_published_at || new Date(track.to_be_published_at) <= new Date()))
+            .map( (track) =>  
             
                 <div>
                     <div className='line'></div>

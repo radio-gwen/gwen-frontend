@@ -65,10 +65,10 @@ const Board = () =>{
 
     const filteredData = filterData(sortedData, searchTerm)
 
-        // We sort events data in alphabetical order
-        const sortedEventsData = [...eventsData].sort((a, b) => a.event_title.localeCompare(b.event_title))
+    // We sort events data in alphabetical order
+    const sortedEventsData = [...eventsData].sort((a, b) => a.event_title.localeCompare(b.event_title))
 
-        const filteredEventsData = filterEventsData(sortedEventsData, searchTerm)
+    const filteredEventsData = filterEventsData(sortedEventsData, searchTerm)
 
 
         console.log("Ma Transmissions Data:", transmissionsData);

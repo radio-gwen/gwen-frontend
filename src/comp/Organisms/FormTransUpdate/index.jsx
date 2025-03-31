@@ -15,6 +15,7 @@ const FormTransUpdate = ({transmission}) =>  {
     const [title, setTitle] = useState(transmission?.transmission_title || "")
     const [desc, setDesc] = useState(transmission?.transmission_desc || "")
     const [text, setText] = useState(transmission?.transmission_text || "")
+    const [deleted, setDeleted] = useState(false);
     const [existingTracks, setExistingTracks] = useState([]);  // Holds tracks from API
     const [newTracks, setNewTracks] = useState([]);  // Holds newly added tracks
     const [message, setMessage] = useState('')
@@ -31,6 +32,7 @@ const FormTransUpdate = ({transmission}) =>  {
             setTitle(transmission.transmission_title || "")
             setDesc(transmission.transmission_desc || "")
             setText(transmission.transmission_text || "")
+            setDeleted(transmission.deleted || false)
         }
     }, [transmission])
 
@@ -67,22 +69,30 @@ const FormTransUpdate = ({transmission}) =>  {
         ])
     }
 
-    // Handle changes for a specific track input field
     const handleTrackChange = (index, field, value, isNewTrack) => {
         if (isNewTrack) {
             setNewTracks((prevTracks) => {
-                const updatedTracks = [...prevTracks]
-                updatedTracks[index] = { ...updatedTracks[index], [field]: value }
+                const updatedTracks = [...prevTracks];
+                updatedTracks[index] = { 
+                    ...updatedTracks[index], 
+                    [field]: field === "scheduleEnabled" ? value : value,
+                    to_be_published_at: field === "scheduledDate" ? value : updatedTracks[index].to_be_published_at
+                };
                 return updatedTracks;
-            })
+            });
         } else {
             setExistingTracks((prevTracks) => {
                 const updatedTracks = [...prevTracks];
-                updatedTracks[index] = { ...updatedTracks[index], [field]: value }
-                return updatedTracks
-            })
+                updatedTracks[index] = { 
+                    ...updatedTracks[index], 
+                    [field]: field === "scheduleEnabled" ? value : value,
+                    to_be_published_at: field === "scheduledDate" ? value : updatedTracks[index].to_be_published_at
+                };
+                return updatedTracks;
+            });
         }
-    }
+    };
+    
 
     const handleNewTrackFileChange = (index, file) => {
         setNewTracks((prevTracks) => {
@@ -120,6 +130,17 @@ const FormTransUpdate = ({transmission}) =>  {
         } else if (type === "audio" && audioInputRefs.current[index]) {
             audioInputRefs.current[index].click()
         }
+    }
+
+    const handleDeleteTrackChange = (index) => {
+        setExistingTracks((prevTracks) => {
+            const updatedTracks = [...prevTracks];
+            updatedTracks[index] = {
+                ...updatedTracks[index],
+                deleted: !updatedTracks[index].deleted, // Toggle deleted state
+            };
+            return updatedTracks;
+        });
     };
 
     const handleSubmit = async (e) => {
@@ -176,6 +197,7 @@ const FormTransUpdate = ({transmission}) =>  {
             transmission_desc: desc,
             transmission_text: text,
             transmission_img: uploadedImagePath || transmission.transmission_img,
+            deleted: deleted,
             id: 1000, // TODO: to be cancelled 
         }
     
@@ -213,6 +235,7 @@ const FormTransUpdate = ({transmission}) =>  {
                     {
                         ...track,
                         tracks_track: uploadedTrackPath, // Ensure the file path is updated
+                        deleted: track.deleted,
                     },
                     { headers: { "Content-Type": "application/json" } }
                 )
@@ -223,7 +246,8 @@ const FormTransUpdate = ({transmission}) =>  {
                 axios.post(`https://localhost:8000/api/tracks/`, 
                     {
                         ...track,
-                        tracks_track: uploadedNewTrackPaths[index] || ""  // Assign the uploaded track path
+                        tracks_track: uploadedNewTrackPaths[index] || "",  // Assign the uploaded track path
+                        to_be_published_at: track.to_be_published_at || null
                     },
                     {
                         headers: { "Content-Type": "application/json" },
@@ -351,77 +375,118 @@ const FormTransUpdate = ({transmission}) =>  {
                             required
                         />
 
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={track.scheduleEnabled || false}
+                                onChange={(e) => handleTrackChange(index, "scheduleEnabled", e.target.checked, true)}
+                            />
+                            Scheduling
+                        </label>
+
+                        {track.scheduleEnabled && (
+                            <input
+                                type="date"
+                                value={track.to_be_published_at || ""}
+                                onChange={(e) => handleTrackChange(index, "scheduledDate", e.target.value, true)}
+                            />
+                        )}
+
                     </span>
                 ))}
 
                 <div className='space-large'></div>
 
                 <h2>Traccie Attuali</h2>
-            {existingTracks.length > 0 ? (
-                existingTracks.map((track, index) => (
-                    <span>
-                    <Toogle title={track.tracks_title} key={track.id} >
-                        <span  className="gap">
-                            
-                        <div className='flex-horiz pad-0'>
+                {existingTracks.length > 0 ? (
+                existingTracks
+                    .filter(track => !track.to_be_published_at || new Date(track.to_be_published_at) < new Date())  // Filter out past tracks
+                    .map((track, index) => (
+                        <span key={track.id}>
+                            <Toogle title={track.tracks_title}>
+                                <span className="gap">
 
-                            <BtnIcon 
-                            icon={iconMusic}
-                            onClick={() => triggerFileInput(index, "audio")}
-                            />
+                                    <div className='flex-horiz pad-0'>
+                                        <BtnIcon 
+                                            icon={iconMusic}
+                                            onClick={() => triggerFileInput(index, "audio")}
+                                        />
+                                        <span>{track.tracks_track}</span>
+                                    </div>
 
-                            <span>{track.tracks_track}</span>
+                                    <input 
+                                        ref={(el) => (audioInputRefs.current[index] = el)} // Assign ref dynamically
+                                        type="file" 
+                                        accept="audio/mp3" 
+                                        onChange={(e) => handleExistingTrackFileChange(index, e.target.files[0])} 
+                                        style={{ display: "none" }} 
+                                    />
 
-                        </div>
+                                    <input
+                                        type="date"
+                                        value={track.tracks_date}
+                                        onChange={(e) =>
+                                            handleTrackChange(index, "tracks_date", e.target.value, false)
+                                        }
+                                        required
+                                    />
 
+                                    <input
+                                        placeholder="Titolo traccia"
+                                        type="text"
+                                        value={track.tracks_title}
+                                        onChange={(e) =>
+                                            handleTrackChange(index, "tracks_title", e.target.value, false)
+                                        }
+                                        required
+                                    />
 
-                            <input 
-                                ref={(el) => (audioInputRefs.current[index] = el)} // Assign ref dynamically
-                                type="file" 
-                                accept="audio/mp3" 
-                                onChange={(e) => handleNewTrackFileChange(index, e.target.files[0])} 
-                                style={{ display: "none" }} 
-                            />
+                                    <input
+                                        placeholder="Descrizione traccia"
+                                        type="text"
+                                        value={track.tracks_desc}
+                                        onChange={(e) =>
+                                            handleTrackChange(index, "tracks_desc", e.target.value, false)
+                                        }
+                                        required
+                                    />
 
-                            <input
-                                type="date"
-                                value={track.tracks_date}
-                                onChange={(e) =>
-                                    handleTrackChange(index, "tracks_date", e.target.value, false)
-                                }
-                                required
-                            />
+                                    {/* Scheduling Checkbox */}
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            checked={track.to_be_published_at && new Date(track.to_be_published_at) > new Date()}
+                                            onChange={(e) => handleTrackChange(index, "scheduleEnabled", e.target.checked, false)}
+                                        />
+                                        Scheduling
+                                    </label>
 
-                            <input
-                                placeholder="Titolo traccia"
-                                type="text"
-                                value={track.tracks_title}
-                                onChange={(e) =>
-                                    handleTrackChange(index, "tracks_title", e.target.value, false)
-                                }
-                                required
-                            />
+                                    {/* Display the scheduling date if enabled */}
+                                    {track.to_be_published_at && (
+                                        <input
+                                            type="date"
+                                            value={track.to_be_published_at || ""}
+                                            onChange={(e) => handleTrackChange(index, "to_be_published_at", e.target.value, false)}
+                                        />
+                                    )}
 
-                            <input
-                                placeholder="Descrizione traccia"
-                                type="text"
-                                value={track.tracks_desc}
-                                onChange={(e) =>
-                                    handleTrackChange(index, "tracks_desc", e.target.value, false)
-                                }
-                                required
-                            />
+                                    {/* Delete checkbox */}
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            checked={track.deleted || false}  // Use the 'deleted' field to control the checkbox state
+                                            onChange={() => handleDeleteTrackChange(index)} // Call function to toggle 'deleted' flag
+                                        />
+                                        Delete
+                                    </label>
+                                </span>
+                            </Toogle>
 
-                            
+                            <div className="line"></div>
                         </span>
-                    </Toogle>
-
-                    <div className="line"></div>
-                    </span>
-
-                ))
+                    ))
             ) : (
-                <p>Nessuna traccia per adesso... </p>
+                <p>Nessuna traccia per adesso...</p>
             )}
 
                 <div className='flex-horiz-right'>
