@@ -7,9 +7,10 @@ import BtnPrimary from "../../Atoms/BtnPrimary"
 import BtnIcon from '../../Atoms/BtnIcon'
 
 import iconMusic from '../../../assets/images/icons/music'
-
 // TODO replace local asset with dynamic ones
 import defaultImage from "../../../assets/images/transmissions/simple80s.jpg"
+
+//const API_URL = process.env.REACT_APP_API_URL
 
 const FormTransUpdate = ({transmission}) =>  {
     const [title, setTitle] = useState(transmission?.transmission_title || "")
@@ -19,7 +20,7 @@ const FormTransUpdate = ({transmission}) =>  {
     const [existingTracks, setExistingTracks] = useState([]);  // Holds tracks from API
     const [newTracks, setNewTracks] = useState([]);  // Holds newly added tracks
     const [message, setMessage] = useState('')
-    //const baseUrl = "https://127.0.0.1:8000/api/files/images?file_name="
+    //const baseUrl = `https://${API_URL}/api/files/images?file_name`"="
     const baseUrl = "/files/images?file_name="
     const [image, setImage] = useState(null)
     const [imagePreview, setImagePreview] = useState(
@@ -45,7 +46,7 @@ const FormTransUpdate = ({transmission}) =>  {
         const fetchTracks = async () => {
             try {
                 const response = await axios.get(
-                    //`https://localhost:8000/api/tracks/?transmission_id=${transmission.id_old}`
+                    //`https://${API_URL}/api/tracks/?transmission_id=${transmission.id_old}`
                     `/?transmission_id=${transmission.id_old}`
                 );
                 const filteredTracks = response.data.filter(
@@ -158,7 +159,7 @@ const FormTransUpdate = ({transmission}) =>  {
 
         try {
             const uploadResponse = await axios.post(
-                //"https://localhost:8000/api/files/images", // Ensure this is the correct API endpoint
+                //`https://${API_URL}/api/files/images`
                 "/api/files/images", // Ensure this is the correct API endpoint
                 imageFormData,
                 { headers: { "Content-Type": "multipart/form-data" } }
@@ -180,7 +181,7 @@ const FormTransUpdate = ({transmission}) =>  {
             
             try {
                 const trackUploadResponse = await axios.post(
-                    //"https://localhost:8000/api/files/tracks", // Ensure this is the correct API endpoint for MP3 files
+                    //`https://${API_URL}/api/files/tracks`
                     "/api/files/tracks", // Ensure this is the correct API endpoint for MP3 files
                     trackFormData,
                     { headers: { "Content-Type": "multipart/form-data" } }
@@ -207,7 +208,7 @@ const FormTransUpdate = ({transmission}) =>  {
     
         try {
             // Update the transmission
-            //await axios.put(`https://localhost:8000/api/transmissions/${transmission.id_old}`, requestData, {
+            //await axios.put(`https://${API_URL}/api/transmissions/${transmission.id_old}`, requestData, {
             await axios.put(`/api/transmissions/${transmission.id_old}`, requestData, {
                 headers: { "Content-Type": "application/json" },
             })
@@ -223,7 +224,7 @@ const FormTransUpdate = ({transmission}) =>  {
             
                     try {
                         const trackUploadResponse = await axios.post(
-                            //"https://localhost:8000/api/files/tracks",
+                            //`https://${API_URL}/api/files/tracks`
                             "/api/files/tracks",
                             trackFormData,
                             { headers: { "Content-Type": "multipart/form-data" } }
@@ -237,7 +238,7 @@ const FormTransUpdate = ({transmission}) =>  {
                 }
             
                 // Now update the track with the new file path
-                //return axios.put(`https://localhost:8000/api/tracks/${track.id}`,
+                //return axios.put(`https://${API_URL}/api/tracks/${track.id}`,
                 return axios.put(`/api/tracks/${track.id}`, 
                     {
                         ...track,
@@ -250,7 +251,7 @@ const FormTransUpdate = ({transmission}) =>  {
     
             // Create new tracks (POST requests)
             const createPromises = newTracks.map((track, index) =>
-                //axios.post(`https://localhost:8000/api/tracks/`,
+                //axios.post(`https://${API_URL}/api/tracks/`,
                 axios.post(`/api/tracks/`, 
                     {
                         ...track,

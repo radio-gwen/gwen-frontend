@@ -6,6 +6,8 @@ import H1 from '../../comp/Atoms/H1'
 import Carousel from '../../comp/Mollecules/Carousel'
 import BtnCTA from '../../comp/Atoms/BtnCTA'
 
+//const API_URL = process.env.REACT_APP_API_URL
+
 function About (){
 
     const navigate = useNavigate()
@@ -18,7 +20,7 @@ function About (){
             <div className='line'></div>
             
             <Carousel 
-            //image='https://127.0.0.1:8000/api/files/images?file_name=radio_gwen_test_06.jpg'
+            //image={`https://${API_URL}/api/files/images?file_name=radio_gwen_test_06.jpg`}
             image='/images?file_name=radio_gwen_test_06.jpg'
             />
 

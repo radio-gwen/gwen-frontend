@@ -11,11 +11,13 @@ import Player from "../../comp/Mollecules/PlayerLine"
 import jingle from '../../assets/audio/jingle.mp3'
 import defaultImage from '../../assets/images/transmissions/simple80s.jpg'
 
+//const API_URL = process.env.REACT_APP_API_URL
+
 const Track = () => {
 
     const {trackId} = useParams()
 
-    //const {data: tracksData, isLoading: isTracksLoading} = useFetch(`https://localhost:8000/api/tracks/`)
+    //const {data: tracksData, isLoading: isTracksLoading} = useFetch(`https://${API_URL}/api/tracks/`)
     const {data: tracksData, isLoading: isTracksLoading} = useFetch(`/api/tracks/`)
 
     if (isTracksLoading) {

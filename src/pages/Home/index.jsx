@@ -14,25 +14,31 @@ import BtnCTA from "../../comp/Atoms/BtnCTA";
 /*TODO Cancel the local import to fetch transmission.image*/
 import defaultImage from "../../assets/images/transmissions/simple80s.jpg";
 
+//const API_URL = process.env.REACT_APP_API_URL
+
 
 function Home() {
 
   const [visibleTransmissions, setVisibleTransmissions] = useState(3)
   const [visibleEvents, setVisibleEvents] = useState(3)
 
-  /*const {data: transmissionsData, isLoading: isTransLoading} = useFetch(`https://localhost:8000/api/transmissions/`,{redirect: 'follow'})*/
+  //const {data: transmissionsData, isLoading: isTransLoading} = useFetch(`https://${API_URL}/api/transmissions/`,{redirect: 'follow'})
    const {data: transmissionsData, isLoading: isTransLoading} = useFetch(`/api/transmissions/`,{redirect: 'follow'})
+   console.log(transmissionsData)
 
-  /*const {data: eventsData, isLoading: isEventsLoading} = useFetch(`https://localhost:8000/api/events/`)*/
+  //const {data: eventsData, isLoading: isEventsLoading} = useFetch(`https://${API_URL}/api/events/`)
   const {data: eventsData, isLoading: isEventsLoading} = useFetch(`/api/events/`)
+  console.log(eventsData)
 
   if (isTransLoading || isEventsLoading) {
     return <div>Loading...</div>; // Add a loading indicator
 }  
 
+  /*
   const loadMore = (type) => {
     type === 'transmissions' ? setVisibleTransmissions( prev => prev + 3 ) : setVisibleEvents( prev => prev + 3 )
   }
+  */
 
 
   return (

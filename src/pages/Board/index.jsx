@@ -4,12 +4,13 @@ import { Outlet } from "react-router-dom"
 import { useParams } from "react-router-dom"
 import { Link } from "react-router-dom"
 
-
 import Section from "../../comp/Templates/Section"
 import LinksList from "../../comp/Organisms/LinksList"
 import SearchBar from "../../comp/Mollecules/SearchBar"
 import H1 from "../../comp/Atoms/H1"
 import BtnCTA from "../../comp/Atoms/BtnCTA"
+
+//const API_URL = process.env.REACT_APP_API_URL
 
 
 const Board = () =>{
@@ -27,10 +28,10 @@ const Board = () =>{
     }
 
     //We fetch the transmissions data
-    //const { data: transmissionsData, isLoading: isTransLoading } = useFetch(`https://localhost:8000/api/transmissions/`)
+    //const { data: transmissionsData, isLoading: isTransLoading } = useFetch(`https://${API_URL}/api/transmissions/`)
     const { data: transmissionsData, isLoading: isTransLoading } = useFetch(`/api/transmissions/`)
     //We fetch the events data
-    //const { data: eventsData, isLoading: isEventsLoading } = useFetch(`https://localhost:8000/api/events/`)
+    //const { data: eventsData, isLoading: isEventsLoading } = useFetch(`https://${API_URL}/api/events/`)
     const { data: eventsData, isLoading: isEventsLoading } = useFetch(`/api/events/`)
     // TODO We get the url data
 

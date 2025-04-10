@@ -6,15 +6,17 @@ import Section from '../../comp/Templates/Section'
 import SectionContent from '../../comp/Organisms/SectionContent'
 import H1 from '../../comp/Atoms/H1'
 
+//const API_URL = process.env.REACT_APP_API_URL
+
 const Search = () => {
 
-    //const { dataTrans: transmissionsData, isLoading: isTransLoading } = useFetch(`https://localhost:8000/api/transmissions/`)
-    //const { dataEvents: eventsData, isLoading: isEventsLoading } = useFetch(`https://localhost:8000/api/events/`)
+    //const { dataTrans: transmissionsData, isLoading: isTransLoading } = useFetch(`https://${API_URL}/api/transmissions/`)
+    //const { dataEvents: eventsData, isLoading: isEventsLoading } = useFetch(`https://${API_URL}/api/events/`)
     const { dataTrans: transmissionsData, isLoading: isTransLoading } = useFetch(`/api/transmissions/`)
     const { dataEvents: eventsData, isLoading: isEventsLoading } = useFetch(`/api/events/`)
     /*TODO Add a Track search system*/
     const [activeTags, setActiveTags] = useState([])
-    //const baseUrl = "https://127.0.0.1:8000/api/files/images?file_name="
+    //const baseUrl = {`https://${API_URL}/api/files/images?file_name=`}
     const baseUrl = "/api/files/images?file_name="
     const [searchParams] = useSearchParams();
     const query = searchParams.get('query');

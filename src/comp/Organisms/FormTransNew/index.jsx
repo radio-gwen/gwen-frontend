@@ -11,6 +11,8 @@ import BtnIcon from '../../Atoms/BtnIcon'
 import defaultImage from "../../../assets/images/transmissions/simple80s.jpg"
 import iconMusic from '../../../assets/images/icons/music'
 
+//const API_URL = process.env.REACT_APP_API_URL
+
 const FormTransNew = () => {
     const [title, setTitle] = useState("")
     const [desc, setDesc] = useState("")
@@ -20,8 +22,8 @@ const FormTransNew = () => {
     const [message, setMessage] = useState("")
     const [image, setImage] = useState(null)
     const [imagePreview, setImagePreview] = useState(defaultImage)
-    const [trackImage, setTrackImage] = useState([])
-    const [trackImagePreview, setTrackImagePreview] = useState([])
+    //const [trackImage, setTrackImage] = useState([])
+    //const [trackImagePreview, setTrackImagePreview] = useState([])
     const imageInputRef = useRef(null)
     const audioInputRefs = useRef([])
     const trackImageInputRef = useRef([])
@@ -102,7 +104,7 @@ const FormTransNew = () => {
     
             try {
                 const uploadResponse = await axios.post(
-                    //"https://localhost:8000/api/files/images", 
+                    //`https://${API_URL}/api/files/images`,
                     "/api/files/images", 
                     imageFormData,
                     { headers: { "Content-Type": "multipart/form-data" } }
@@ -124,7 +126,7 @@ const FormTransNew = () => {
                 
                 try {
                     const trackUploadResponse = await axios.post(
-                        //"https://localhost:8000/api/files/tracks", 
+                        //`https://${API_URL}/api/files/tracks`,
                         "/api/files/tracks", 
                         trackFormData,
                         { headers: { "Content-Type": "multipart/form-data" } }
@@ -146,7 +148,7 @@ const FormTransNew = () => {
 
                 try {
                     const trackImageUploadResponse = await axios.post(
-                        //"https://localhost:8000/api/files/images",
+                        //`https://${API_URL}/api/files/images`,
                         "/api/files/images",
                         trackImageFormData,
                         { headers: { "Content-Type": "multipart/form-data" } }
@@ -172,7 +174,7 @@ const FormTransNew = () => {
     
         try {
             const transResponse = await axios.post(
-                //"https://localhost:8000/api/transmissions/",
+                //`https://${API_URL}/api/transmissions`,
                 "/api/transmissions/",
                 requestTransData,
                 { headers: { "Content-Type": "application/json" } }
@@ -196,7 +198,7 @@ const FormTransNew = () => {
                 };
     
                 await axios.post(
-                    //"https://localhost:8000/api/tracks/",
+                    //`https://${API_URL}/api/tracks/`,
                     "/api/tracks/",
                     requestTracksData,
                     { headers: { "Content-Type": "application/json" } }

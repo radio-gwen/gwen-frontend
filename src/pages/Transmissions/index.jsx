@@ -12,15 +12,17 @@ import BtnCTA from "../../comp/Atoms/BtnCTA"
 // TODO replace local asset with dynamic ones
 import defaultImage from '../../assets/images/transmissions/simple80s.jpg'
 
+//const API_URL = process.env.REACT_APP_API_URL
+
 const Transmissions = () => {
 
-    /*const { data: transmissionsData, isLoading: isTransLoading } = useFetch(`https://localhost:8000/api/transmissions/`)*/
+    /*const { data: transmissionsData, isLoading: isTransLoading } = useFetch(`https://${API_URL}/api/transmissions/`)*/
     const { data: transmissionsData, isLoading: isTransLoading } = useFetch(`/api/transmissions/`)
 
     const [activeTags, setActiveTags] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
     const [visibleTransmissions, setVisibleTransmissions] = useState(6)
-    //const baseUrl = "https://127.0.0.1:8000/api/files/images?file_name="
+    //const baseUrl = {`https://${API_URL}/api/files/images?file_name=`}
     const baseUrl = "/api/files/images?file_name="
 
     if (isTransLoading) {
@@ -52,8 +54,6 @@ const Transmissions = () => {
     const filteredBySearch = filterBySearch(sortedData, searchTerm)
     const filteredByTags = filterByTags(filteredBySearch, activeTags)
     const visibleData = filteredByTags.slice(0, visibleTransmissions) // Slice only the filtered ones
-
-    console.log('hello')
 
     return (
         <div>

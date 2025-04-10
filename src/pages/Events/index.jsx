@@ -12,19 +12,21 @@ import BtnCTA from "../../comp/Atoms/BtnCTA"
 //TODO Replace local asset with dynamics ones
 import defaultImage from '../../assets/images/transmissions/simple80s.jpg'
 
+//const API_URL = process.env.REACT_APP_API_URL
+
 const Events = () => {
 
-    /*const {data: eventsData, isLoading: isEventLoading} = useFetch(`https://localhost:8000/api/events/`)*/
+    //const {data: eventsData, isLoading: isEventLoading} = useFetch(`https://${API_URL}/api/events/`)
     const {data: eventsData, isLoading: isEventLoading} = useFetch(`/api/events/`)
 
     const [activeTags, setActiveTags] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
     const [visibleEvents, setVisibleEvents] = useState(6)
-    //const baseUrl = "https://127.0.0.1:8000/api/files/images?file_name="
+    //const baseUrl = {`https://${API_URL}/api/files/images?file_name=`}
     const baseUrl = "/api/files/images?file_name="
 
     if (isEventLoading) {
-        return <div>Loading...</div>; // Add a loading indicator
+        return <div>Loading...</div>; //TODO Add a loading indicator
     }
 
     // Filter transmissions by search term
