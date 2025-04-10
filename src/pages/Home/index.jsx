@@ -1,9 +1,10 @@
 import { useFetch } from "../../utils/hooks/useFetch";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import Section from "../../comp/Templates/Section";
 import H1 from "../../comp/Atoms/H1";
-import BlockCenter from "../../comp/Organisms/BlockCenter";
+
 import CardContent from "../../comp/Mollecules/CardContent";
 import CardImage from "../../comp/Organisms/CardImage";
 import CardToogle from "../../comp/Organisms/CardToogle";
@@ -58,7 +59,7 @@ function Home() {
           ))}
 
         <div className="flex-horiz-center background-black">
-          <BtnCTA btnContent="più trasmissioni" onClick={() => loadMore("transmissions")} />
+          <Link to='/transmissions'><BtnCTA btnContent="più trasmissioni" /></Link>
         </div>
       </Section>    
 
@@ -84,13 +85,13 @@ function Home() {
             <div className='line'></div>
           </div>
         )}
-        <div className="flex-horiz-center background-black"> <BtnCTA btnContent='più eventi' onClick={() => loadMore('events')}/> </div>
+        <div className="flex-horiz-center background-black"> <Link to='/events'><BtnCTA btnContent='più eventi'/></Link> </div>
       </Section>
 
       <Section className='background-cta'>
-        <BlockCenter>
+        
           <Newsletter />
-        </BlockCenter>
+        
         <div className='line'></div>
       </Section>
 

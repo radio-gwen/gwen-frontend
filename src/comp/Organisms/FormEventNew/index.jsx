@@ -15,6 +15,8 @@ const FormEventNew = () => {
     const [title, setTitle] = useState("")
     const [desc, setDesc] = useState("")
     const [text, setText] = useState("")
+    const [beginingDate, setBeginingDate] = useState("")
+    const [endingDate, setEndingDate] = useState("")
     const [programType, setProgramType] = useState([])
     const [tracks, setTracks] = useState([])
     const [message, setMessage] = useState("")
@@ -79,10 +81,10 @@ const FormEventNew = () => {
     }
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
 
-        let uploadedImagePath = null;
-        let uploadedTrackPaths = [];
+        let uploadedImagePath = null
+        let uploadedTrackPaths = []
 
         // Step 1: Upload Image if selected
         if (image) {
@@ -130,6 +132,8 @@ const FormEventNew = () => {
             event_title: title,
             event_desc: desc,
             event_text: text,
+            event_begining: beginingDate,
+            event_ending: endingDate,
             event_label: programType.join(", "),
             event_img: uploadedImagePath || "",
             id: 1000,
@@ -165,8 +169,8 @@ const FormEventNew = () => {
                     { headers: { "Content-Type": "application/json" } }
                 );
             }
-
-            setMessage("Transmission and track posted successfully! :)")
+        
+            setMessage("Event and track posted successfully! :)")
         } catch (error) {
             console.log("Error:", error.response?.data);
             setMessage("Error creating transmission and track...")
@@ -192,7 +196,7 @@ const FormEventNew = () => {
                     onChange={handleImageChange} 
                     ref={imageInputRef} // Connect input to useRef
                     style={{ display: "none" }} // Hide the input field
-                    />
+                />
 
                 <div className='flex-horiz'>
                         <input
@@ -220,6 +224,18 @@ const FormEventNew = () => {
                             Talk
                         </label>
                 </div>
+
+                <input
+                    type='date'
+                    onChange={(e) => setBeginingDate(e.target.value)}
+                    required
+                />
+
+                <input
+                    type='date'
+                    onChange={(e) => setEndingDate(e.target.value)}
+                    required
+                />
 
                 <input
                     placeholder="Titolo"

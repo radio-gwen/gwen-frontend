@@ -20,8 +20,11 @@ const FormTransNew = () => {
     const [message, setMessage] = useState("")
     const [image, setImage] = useState(null)
     const [imagePreview, setImagePreview] = useState(defaultImage)
-    const imageInputRef = useRef(null);
-    const audioInputRefs = useRef([]);
+    const [trackImage, setTrackImage] = useState([])
+    const [trackImagePreview, setTrackImagePreview] = useState([])
+    const imageInputRef = useRef(null)
+    const audioInputRefs = useRef([])
+    const trackImageInputRef = useRef([])
 
     const handleProgramTypeChange = (event, type) => {
         setProgramType((prev) =>
@@ -35,7 +38,7 @@ const FormTransNew = () => {
     const addTrack = () => {
         setTracks((prevTracks) => [
             ...prevTracks,
-            { trackTitle: "", trackDesc: "", trackDate: "", trackFile: null }, // Add trackFile to track state
+            { trackTitle: "", trackDesc: "", trackDate: "", trackFile: null, trackImage: null }, // Add trackFile to track state
         ])
     }
 
@@ -56,6 +59,14 @@ const FormTransNew = () => {
         })
     }
 
+    const handleTrackImageChange = (index, file) => {
+        setTracks((prevTracks) => {
+            const updatedTracks = [...prevTracks]
+            updatedTracks[index] = { ...updatedTracks[index], trackImage: file }
+            return updatedTracks;
+        })
+    }
+
     const handleImageChange = (e) => {
         const file = e.target.files[0]
         if (file) {
@@ -71,7 +82,7 @@ const FormTransNew = () => {
     // Function to trigger a file input click
     const triggerFileInput = (index = null, type = "image") => {
         if (type === "image") {
-            imageInputRef.current.click();
+            trackImageInputRef.current[index].click();
         } else if (type === "audio" && audioInputRefs.current[index]) {
             audioInputRefs.current[index].click()
         }
@@ -82,6 +93,7 @@ const FormTransNew = () => {
     
         let uploadedImagePath = null;
         let uploadedTrackPaths = [];
+        let uploadedImageTrackPaths = []
     
         // Step 1: Upload Image if selected
         if (image) {
@@ -124,6 +136,27 @@ const FormTransNew = () => {
             }
         }
 
+        // Step 2.2: Upload Image files for each track
+        for (let track of tracks)  {
+            if (track.trackImage) {
+                const trackImageFormData = new FormData()
+                trackImageFormData.append('files', track.trackImage)
+
+                try {
+                    const trackImageUploadResponse = await axios.post(
+                        "https://localhost:8000/api/files/images",
+                        trackImageFormData,
+                        { headers: { "Content-Type": "multipart/form-data" } }
+                    )
+                    uploadedImageTrackPaths.push(trackImageUploadResponse.data.uploaded_files[0])
+                }catch (error){
+                    console.error("Error uploading images tracks:", error.response ? error.response.data  : error)
+                    setMessage("Error uploading tracks images...")
+                    return
+                }
+            }
+        }
+
         // Step 3: Create the transmission data
         const requestTransData = {
             transmission_title: title,
@@ -149,7 +182,7 @@ const FormTransNew = () => {
                     tracks_publication: "trans",
                     tracks_title: track.trackTitle,
                     tracks_desc: track.trackDesc,
-                    tracks_img: uploadedImagePath || "", // Use the uploaded image if available
+                    tracks_img: uploadedImageTrackPaths[index] || "", // Use the uploaded image if available
                     tracks_type: "tracks_type",
                     tracks_date: track.trackDate || "2023-11-07",
                     tracks_label: null,
@@ -268,6 +301,13 @@ const FormTransNew = () => {
                         />
 
                         <input
+                            type="date"
+                            value={track.trackDate}
+                            onChange={(e) => handleTrackChange(index, "trackDate", e.target.value)}
+                            required
+                        />
+
+                        <input
                             placeholder="Titolo traccia"
                             type="text"
                             value={track.trackTitle}
@@ -276,17 +316,23 @@ const FormTransNew = () => {
                         />
 
                         <input
-                            type="date"
-                            value={track.trackDate}
-                            onChange={(e) => handleTrackChange(index, "trackDate", e.target.value)}
-                            required
-                        />
-
-                        <input
                             placeholder="Descrizione traccia"
                             type="text"
                             value={track.trackDesc}
                             onChange={(e) => handleTrackChange(index, "trackDesc", e.target.value)}
+                        />
+
+                        <BtnIcon 
+                            icon={iconMusic}
+                            onClick={() => triggerFileInput(index, "image")}
+                        />
+
+                        <input 
+                            ref={(el) => (trackImageInputRef.current[index] = el)} // Assign ref dynamically
+                            type="file" 
+                            accept="image/*" 
+                            onChange={(e) => handleTrackImageChange(index, e.target.files[0])} 
+                            style={{ display: "none" }} 
                         />
 
                     </span>

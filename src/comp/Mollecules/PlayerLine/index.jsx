@@ -6,7 +6,7 @@ import BtnTimelineMini from "../../Atoms/BtnTimelineMini"
 import BtnIconShare from "../../Atoms/BtnIconShare"
 
 
-const Player = ({id, track, desc}) => {
+const PlayerLine = ({id, track, desc}) => {
 
     const [isPlaying, setIsPlaying] = useState(false)
     const audioTrack = useRef(new Audio(track))
@@ -17,13 +17,12 @@ const Player = ({id, track, desc}) => {
     }
 
     return(
-        <div className='player background-white'>
+        <div className='player'>
             
             <div className='flex-horiz'>
                 <BtnPlayPause isPlaying={isPlaying} onClick={() => {audioPlayer()}}/>
                 <Timeline trackRef = {audioTrack}/>
             </div>
-            
             
                 <BtnTimelineMini trackRef= {audioTrack} />
                 <TimeIndicator trackRef = {audioTrack}/>
@@ -34,4 +33,4 @@ const Player = ({id, track, desc}) => {
     )
 }
 
-export default Player
+export default PlayerLine

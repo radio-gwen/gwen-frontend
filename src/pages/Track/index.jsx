@@ -5,7 +5,7 @@ import Section from "../../comp/Templates/Section"
 import BlockCenter from "../../comp/Organisms/BlockCenter"
 import Carousel from "../../comp/Mollecules/Carousel"
 import Card from "../../comp/Organisms/Card"
-import Player from "../../comp/Mollecules/Player"
+import Player from "../../comp/Mollecules/PlayerLine"
 
 //TODO replace local asset with dynamic one
 import jingle from '../../assets/audio/jingle.mp3'

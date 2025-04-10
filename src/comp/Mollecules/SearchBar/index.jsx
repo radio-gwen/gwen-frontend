@@ -1,11 +1,16 @@
+import search from '../../../assets/images/icons/search'
+
 const SearchBar = ({searchTerm, setSearchTerm}) => {
     return(
-        <input
+        <span>
+            {search}
+            <input
                 type="text"
                 placeholder="Search..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
+        </span>
     )
 }
 

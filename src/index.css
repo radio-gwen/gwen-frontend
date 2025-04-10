@@ -29,7 +29,7 @@ footer, header, hgroup, menu, nav, section {
 }
 
 body {
-    line-height: 1;
+    line-height: 1.25;
 }
 
 ::selection {
@@ -121,6 +121,10 @@ body {
 a{
   color: var(--black);
   text-decoration: none;
+}
+
+header a:hover{
+  text-decoration: underline;
 }
 
 /*/BLOCKS/*/
@@ -317,7 +321,6 @@ nav ul li{
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--black);
   color: var(--white);
   padding: var(--spacing-small) var(--spacing-large);
 }
@@ -328,6 +331,15 @@ nav ul li{
   border: var(--line) var(--black) solid;
   border-radius: var(--border-radius);
   padding: var(--spacing-large) var(--spacing-very-very-large);
+}
+
+.block-center-medium{
+  display: flex;
+  margin: var(--spacing-medium);
+  border: var(--line) var(--black) solid;
+  border-radius: var(--border-radius);
+  padding: var(--spacing-large) var(--spacing-very-very-large);
+  max-width: 80%;
 }
 
 section{
@@ -671,9 +683,6 @@ input[type="checkbox"]:checked::before {
 
 .player{
   display: flex;
-  border: var(--line) var(--black) solid;
-  border-radius: var(--border-radius);
-  padding: var(--spacing-small) var(--spacing-large);
   align-items: center;
   justify-content: space-between;
 }
@@ -690,6 +699,12 @@ input[type="checkbox"]:checked::before {
 }
 
 .links-list-search-bar input{
+  all: unset;
+  background-color: transparent;
+  border-bottom: solid var(--line) var(--black);
+}
+
+.search-line input{
   all: unset;
   background-color: transparent;
   border-bottom: solid var(--line) var(--black);
@@ -758,6 +773,7 @@ input[type="checkbox"]:checked::before {
   padding: var(--spacing-medium);
   margin: var(--spacing-large) var(--spacing-very-very-large);
   column-gap: 20px;
+  min-height: 150px;
 }
 
 .links-list ul{
@@ -771,6 +787,25 @@ input[type="checkbox"]:checked::before {
 
 .links-list a:hover{
   text-decoration: underline;
+}
+
+.block-player{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--white);
+  padding: var(--spacing-small) var(--spacing-large);
+  transition: 1s;
+  height: 50px;
+}
+
+.block-player.full{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--white);
+  padding: var(--spacing-small) var(--spacing-large);
+  transition: 1s;
 }
 
 /*/LAYOUT/*/

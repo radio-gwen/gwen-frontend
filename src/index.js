@@ -8,6 +8,7 @@ import Home from './pages/Home'
 import Transmissions from './pages/Transmissions'
 import Events from './pages/Events'
 import About from './pages/About'
+import Search from './pages/Search'
 import Transmission from './pages/Transmission'
 import Event from './pages/Event'
 import Track from './pages/Track'
@@ -24,8 +25,11 @@ import reportWebVitals from './reportWebVitals'
 
 const App = () => {
 
-  const [isNavOpen, setIsNavOpen ] = useState(true)
-  const [ isMobile, setIsMobile ] = useState(false)
+  const [isNavOpen, setIsNavOpen] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
+  const [audioSrc, setAudioSrc] = useState('')
+  const [trackPlaying, setTrackPlaying] = useState('')
+  const [isTrackSet, setIsTrackSet] = useState(false)
 
   useEffect(() => {
     const checkMobile = () => {
@@ -48,14 +52,15 @@ const App = () => {
         <AudioProvider>
           <div className='global-container'>
             <Header isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} isMobile={isMobile} />
-            <Player isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} isMobile={isMobile}/>
+            <Player isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} isMobile={isMobile} audioSrc={audioSrc} setAudioSrc={setAudioSrc} trackPlaying={trackPlaying} setTrackPlaying={setTrackPlaying} isTrackSet={isTrackSet}/>
             <Banner />
             <Routes>
               <Route path='/' element={<Home />}/>
               <Route path='/transmissions' element={<Transmissions />}/>
               <Route path='/events' element={<Events />}/>
               <Route path='/about' element={<About />}/>
-              <Route path='/transmission/:transId' element={<Transmission />}/>
+              <Route path='/search' element={<Search />} />
+              <Route path='/transmission/:transId' element={<Transmission setAudioSrc={setAudioSrc} setTrackPlaying={setTrackPlaying} setIsTrackSet={setIsTrackSet} />}/>
               <Route path='/event/:eventId' element={<Event />}/>
               <Route path='/track/:trackId' element={<Track />}/>
               <Route path='/board' element={<Board />}>

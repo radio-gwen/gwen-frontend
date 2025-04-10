@@ -7,12 +7,9 @@ const Carousel = ({image, width}) => {
         position: relative;
         overflow: hidden;
     `
-
     const Slider = styled.div`
         display: flex;
-        flex-direction: row;
-
-    `
+        flex-direction: row;    `
 
     return(
         <CarouselBox>

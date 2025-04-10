@@ -51,16 +51,37 @@ const Transmissions = () => {
     const filteredByTags = filterByTags(filteredBySearch, activeTags)
     const visibleData = filteredByTags.slice(0, visibleTransmissions) // Slice only the filtered ones
 
+    console.log('hello')
+
     return (
         <div>
+
+            <Section className='background-black text-white'>
+            <H1 content='Transmissioni' />
+                <div className='flex-horiz links-list-search-bar'>
+                    <SearchBar
+                        searchTerm={searchTerm}
+                        setSearchTerm={setSearchTerm}
+                    />
+                </div>
+
+                <LinksList 
+                    data={filteredBySearch}
+                    text={filteredBySearch.map(item => item.transmission_title)}
+                    url={filteredBySearch.map(item => `/transmission/${item.id_old}`)}
+                />
+            </Section>
+
             <Section className="background-white">
-                <H1 content='Transmissioni' />
+                
                 <div className='line'></div>
 
                 <TagSelector 
                     activeTags={activeTags} 
                     setActiveTags={setActiveTags}
                 />
+
+                <div className='space-medium'></div>
 
                 <div className='flex-grid'>
                     {visibleData.map(transmission => {
@@ -88,20 +109,6 @@ const Transmissions = () => {
                 </div>
             </Section>
 
-            <Section className='background-black text-white'>
-                <div className='flex-horiz links-list-search-bar'>
-                    <SearchBar
-                        searchTerm={searchTerm}
-                        setSearchTerm={setSearchTerm}
-                    />
-                </div>
-
-                <LinksList 
-                    data={filteredByTags}
-                    text={filteredByTags.map(item => item.transmission_title)}
-                    url={filteredByTags.map(item => `/transmission/${item.id_old}`)}
-                />
-            </Section>
         </div>
     )
 }

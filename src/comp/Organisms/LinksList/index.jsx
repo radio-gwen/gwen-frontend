@@ -4,10 +4,10 @@ import BtnTertiary from "../../Atoms/BtnTertiary"
 
 const LinksList = ({data, text, url, key, onClick}) => {
 
-    const [visibleCount, setVisibleCount] = useState(20)
+    const [visibleCount, setVisibleCount] = useState(10)
 
     const loadMore = () => {
-        setVisibleCount(prevCount => Math.min(prevCount + 20, data.length))
+        setVisibleCount(prevCount => Math.min(prevCount +10, data.length))
     }
 
     return(

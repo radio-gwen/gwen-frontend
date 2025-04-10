@@ -15,6 +15,8 @@ const FormEventsUpdate = ({event}) => {
     const [title, setTitle] = useState(event?.event_title || "")
     const [desc, setDesc] = useState(event?.event_desc || "")
     const [text, setText] = useState(event?.event_text || "")
+    const [beginingDate, setBeginingDate] = useState(event?.event_begining || "")
+    const [endingDate, setEndingDate] = useState(event?.event_ending || "")
     const [existingTracks, setExistingTracks] = useState([]);  // Holds tracks from API
     const [newTracks, setNewTracks] = useState([]);  // Holds newly added tracks
     const [message, setMessage] = useState('')
@@ -30,7 +32,9 @@ const FormEventsUpdate = ({event}) => {
         if (event) {
             setTitle(event.event_title || "")
             setDesc(event.event_desc || "")
-            setText(event.transmission_text || "")
+            setText(event.event_text || "")
+            setBeginingDate(event.event_begining || "")
+            setEndingDate(event.event_ending || "")
         }
     }, [event])
 
@@ -174,6 +178,8 @@ const FormEventsUpdate = ({event}) => {
             event_title: title,
             event_desc: desc,
             event_text: text,
+            event_begining: beginingDate,
+            event_ending: endingDate,
             event_img: uploadedImagePath || event.event_img,
             id: 1000, // TODO: to be cancelled 
         }
@@ -258,6 +264,18 @@ const FormEventsUpdate = ({event}) => {
                     onChange={handleImageChange} // Handle image selection
                     ref={imageInputRef} // Connect input to useRef
                     style={{ display: "none" }} // Hide the input field
+                />
+
+                <input 
+                    type='date'
+                    value={beginingDate}
+                    onChange={(e) => setBeginingDate(e.target.value)}
+                />
+
+                <input 
+                    type='date'
+                    value={endingDate}
+                    onChange={(e) => setEndingDate(e.target.value)}
                 />
 
                 <input

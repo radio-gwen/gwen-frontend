@@ -29,7 +29,7 @@ const Events = () => {
     const filterBySearch = (data, searchTerm) => {
         if (!searchTerm) return data
         return data.filter(item =>
-            item.transmission_title.toLowerCase().includes(searchTerm.toLowerCase())
+            item.event_title.toLowerCase().includes(searchTerm.toLowerCase())
         )
     }
 
@@ -54,8 +54,25 @@ const Events = () => {
     return(
 
         <div>
-            <Section className="background-white">
+
+            <Section className='background-black text-white'>
                 <H1 content='Eventi' />
+                <div className='flex-horiz links-list-search-bar'>
+                    <SearchBar
+                        searchTerm={searchTerm}
+                        setSearchTerm={setSearchTerm}
+                    />
+                </div>
+
+                <LinksList 
+                    data={filteredBySearch}
+                    text={filteredBySearch.map(item => item.event_title)}
+                    url={filteredBySearch.map(item => `/event/${item.id_old}`)}
+                />
+            </Section>   
+
+            <Section className="background-white">
+                
                 <div className='line'></div>
 
                 <TagSelector 
@@ -87,21 +104,7 @@ const Events = () => {
                     )}
                     </div>
             </Section>
-
-            <Section className='background-black text-white'>
-                <div className='flex-horiz links-list-search-bar'>
-                    <SearchBar
-                        searchTerm={searchTerm}
-                        setSearchTerm={setSearchTerm}
-                    />
-                </div>
-
-                <LinksList 
-                    data={filteredByTags}
-                    text={filteredByTags.map(item => item.event_title)}
-                    url={filteredByTags.map(item => `/event/${item.id_old}`)}
-                />
-            </Section>    
+ 
         </div>
     )
 }
