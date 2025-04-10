@@ -15,7 +15,8 @@ const Track = () => {
 
     const {trackId} = useParams()
 
-    const {data: tracksData, isLoading: isTracksLoading} = useFetch(`https://localhost:8000/api/tracks/`)
+    //const {data: tracksData, isLoading: isTracksLoading} = useFetch(`https://localhost:8000/api/tracks/`)
+    const {data: tracksData, isLoading: isTracksLoading} = useFetch(`/api/tracks/`)
 
     if (isTracksLoading) {
         return <div>Loading...</div>; //TODO Add a loading indicator

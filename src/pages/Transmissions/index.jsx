@@ -14,12 +14,14 @@ import defaultImage from '../../assets/images/transmissions/simple80s.jpg'
 
 const Transmissions = () => {
 
-    const { data: transmissionsData, isLoading: isTransLoading } = useFetch(`https://localhost:8000/api/transmissions/`)
+    /*const { data: transmissionsData, isLoading: isTransLoading } = useFetch(`https://localhost:8000/api/transmissions/`)*/
+    const { data: transmissionsData, isLoading: isTransLoading } = useFetch(`/api/transmissions/`)
 
     const [activeTags, setActiveTags] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
     const [visibleTransmissions, setVisibleTransmissions] = useState(6)
-    const baseUrl = "https://127.0.0.1:8000/api/files/images?file_name="
+    //const baseUrl = "https://127.0.0.1:8000/api/files/images?file_name="
+    const baseUrl = "/api/files/images?file_name="
 
     if (isTransLoading) {
         return <div>Loading...</div>; // Add a loading indicator

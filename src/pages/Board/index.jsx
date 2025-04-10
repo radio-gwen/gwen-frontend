@@ -27,9 +27,11 @@ const Board = () =>{
     }
 
     //We fetch the transmissions data
-    const { data: transmissionsData, isLoading: isTransLoading } = useFetch(`https://localhost:8000/api/transmissions/`)
+    //const { data: transmissionsData, isLoading: isTransLoading } = useFetch(`https://localhost:8000/api/transmissions/`)
+    const { data: transmissionsData, isLoading: isTransLoading } = useFetch(`/api/transmissions/`)
     //We fetch the events data
-    const { data: eventsData, isLoading: isEventsLoading } = useFetch(`https://localhost:8000/api/events/`)
+    //const { data: eventsData, isLoading: isEventsLoading } = useFetch(`https://localhost:8000/api/events/`)
+    const { data: eventsData, isLoading: isEventsLoading } = useFetch(`/api/events/`)
     // TODO We get the url data
 
     // We get the id from the URL dynamically (TODO)

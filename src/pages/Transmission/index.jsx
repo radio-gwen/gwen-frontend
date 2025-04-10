@@ -20,9 +20,11 @@ const Transmission = ({setAudioSrc, setTrackPlaying, setIsTrackSet}) => {
 
     const {transId} = useParams()
 
-    const {data: transmissionsData, isLoading: isTransLoading} = useFetch(`https://localhost:8000/api/transmissions/`)
+    //const {data: transmissionsData, isLoading: isTransLoading} = useFetch(`https://localhost:8000/api/transmissions/`)
+    const {data: transmissionsData, isLoading: isTransLoading} = useFetch(`/api/transmissions/`)
 
-    const {data: tracksData, isLoading: isTracksLoading} = useFetch(`https://localhost:8000/api/tracks/`)
+    //const {data: tracksData, isLoading: isTracksLoading} = useFetch(`https://localhost:8000/api/tracks/`)
+    const {data: tracksData, isLoading: isTracksLoading} = useFetch(`/api/tracks/`)
   
     if (isTransLoading) {
         return <div>Loading...</div>; // Add a loading indicator
@@ -51,7 +53,8 @@ const Transmission = ({setAudioSrc, setTrackPlaying, setIsTrackSet}) => {
     }
 
     const imageUrl = transmission?.transmission_img 
-  ? `https://localhost:8000/api/files/images?file_name=${transmission.transmission_img}` 
+  //? `https://localhost:8000/api/files/images?file_name=${transmission.transmission_img}`
+  ? `/api/files/images?file_name=${transmission.transmission_img}` 
   : defaultImage;
 
 
@@ -78,7 +81,8 @@ const Transmission = ({setAudioSrc, setTrackPlaying, setIsTrackSet}) => {
                     <div className='line'></div>
                     <Toogle title={track.tracks_title} id={`track-${track.track_id}`}>
                         <div className="flex-horiz" style={{alignItems: 'flex-start', padding: '0px'}}>
-                            {track.tracks_img && <ImageBox src={`https://127.0.0.1:8000/api/files/images?file_name=${track.tracks_img}`} />}
+                            {/*{track.tracks_img && <ImageBox src={`https://127.0.0.1:8000/api/files/images?file_name=${track.tracks_img}`} />}*/}
+                            {track.tracks_img && <ImageBox src={`/api/files/images?file_name=${track.tracks_img}`} />}
                             
                             <div className='flex-vert' style={{padding: '0px'}}>
                                 <p style={{marginTop: 'var(--spacing-small)'}}>{track.tracks_desc}</p>
@@ -86,7 +90,8 @@ const Transmission = ({setAudioSrc, setTrackPlaying, setIsTrackSet}) => {
                                     <BtnCTA
                                         btnContent='Ascolta!'
                                         onClick={() => {
-                                            setAudioSrc(`https://127.0.0.1:8000/api/files/tracks?file_name=${track.tracks_track}`)
+                                            /*setAudioSrc(`https://127.0.0.1:8000/api/files/tracks?file_name=${track.tracks_track}`)*/
+                                            setAudioSrc(`/api/files/tracks?file_name=${track.tracks_track}`)
                                             setTrackPlaying(track.tracks_title)
                                             setIsTrackSet(true)
                                     }}/>

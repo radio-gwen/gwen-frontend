@@ -20,9 +20,11 @@ const Event = () => {
 
     const {eventId} = useParams()
 
-    const {data: eventsData, isLoading: isEventLoading} = useFetch(`https://localhost:8000/api/events/`)
+    //const {data: eventsData, isLoading: isEventLoading} = useFetch(`https://localhost:8000/api/events/`)
+    const {data: eventsData, isLoading: isEventLoading} = useFetch(`/api/events/`)
 
-    const {data: tracksData, isLoading: isTracksLoading} = useFetch(`https://localhost:8000/api/tracks/`)
+    //const {data: tracksData, isLoading: isTracksLoading} = useFetch(`https://localhost:8000/api/tracks/`)
+    const {data: tracksData, isLoading: isTracksLoading} = useFetch(`/api/tracks/`)
     
 
     if (isEventLoading) {
@@ -48,7 +50,8 @@ const Event = () => {
       )
 
       const imageUrl = event?.event_img 
-      ? `https://localhost:8000/api/files/images?file_name=${event.event_img}` 
+      //? `https://localhost:8000/api/files/images?file_name=${event.event_img}`
+      ? `/api/files/images?file_name=${event.event_img}` 
       : defaultImage;
 
     return (
@@ -77,7 +80,8 @@ const Event = () => {
                     <Toogle title={track.tracks_title} id={`track-${track.id}`}>
                         <p>{track.tracks_desc}</p>
                         <Player 
-                        track = {`https://127.0.0.1:8000/api/files/tracks?file_name=${track.tracks_track}`}
+                        /*track = {`https://127.0.0.1:8000/api/files/tracks?file_name=${track.tracks_track}`}*/
+                        track = {`/api/files/tracks?file_name=${track.tracks_track}`}
                         id ={track.id}
                         />  
                     </Toogle>

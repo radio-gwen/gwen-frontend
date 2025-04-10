@@ -93,7 +93,8 @@ const FormEventNew = () => {
     
             try {
                 const uploadResponse = await axios.post(
-                    "https://localhost:8000/api/files/images", // Ensure this is the correct API endpoint
+                    //"https://localhost:8000/api/files/images", // Ensure this is the correct API endpoint
+                    "/api/files/images", // Ensure this is the correct API endpoint
                     imageFormData,
                     { headers: { "Content-Type": "multipart/form-data" } }
                 );
@@ -114,7 +115,8 @@ const FormEventNew = () => {
                 
                 try {
                     const trackUploadResponse = await axios.post(
-                        "https://localhost:8000/api/files/tracks", // Ensure this is the correct API endpoint for MP3 files
+                        //"https://localhost:8000/api/files/tracks", // Ensure this is the correct API endpoint for MP3 files
+                        "/api/files/tracks", // Ensure this is the correct API endpoint for MP3 files
                         trackFormData,
                         { headers: { "Content-Type": "multipart/form-data" } }
                     );
@@ -141,7 +143,8 @@ const FormEventNew = () => {
 
         try {
             const transResponse = await axios.post(
-                "https://localhost:8000/api/events/",
+                //"https://localhost:8000/api/events/",
+                "/api/events/",
                 requestTransData,
                 { headers: { "Content-Type": "application/json" } }
             )
@@ -164,7 +167,8 @@ const FormEventNew = () => {
                 };
 
                 await axios.post(
-                    "https://localhost:8000/api/tracks/",
+                    //"https://localhost:8000/api/tracks/",
+                    "/api/tracks/",
                     requestTracksData,
                     { headers: { "Content-Type": "application/json" } }
                 );

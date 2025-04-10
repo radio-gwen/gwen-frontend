@@ -18,7 +18,8 @@ function About (){
             <div className='line'></div>
             
             <Carousel 
-            image='https://127.0.0.1:8000/api/files/images?file_name=radio_gwen_test_06.jpg'
+            //image='https://127.0.0.1:8000/api/files/images?file_name=radio_gwen_test_06.jpg'
+            image='/images?file_name=radio_gwen_test_06.jpg'
             />
 
             <div className='line'></div>

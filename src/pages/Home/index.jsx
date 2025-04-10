@@ -20,9 +20,11 @@ function Home() {
   const [visibleTransmissions, setVisibleTransmissions] = useState(3)
   const [visibleEvents, setVisibleEvents] = useState(3)
 
-  const {data: transmissionsData, isLoading: isTransLoading} = useFetch(`https://localhost:8000/api/transmissions/`,{redirect: 'follow'})
+  /*const {data: transmissionsData, isLoading: isTransLoading} = useFetch(`https://localhost:8000/api/transmissions/`,{redirect: 'follow'})*/
+   const {data: transmissionsData, isLoading: isTransLoading} = useFetch(`/api/transmissions/`,{redirect: 'follow'})
 
-  const {data: eventsData, isLoading: isEventsLoading} = useFetch(`https://localhost:8000/api/events/`)
+  /*const {data: eventsData, isLoading: isEventsLoading} = useFetch(`https://localhost:8000/api/events/`)*/
+  const {data: eventsData, isLoading: isEventsLoading} = useFetch(`/api/events/`)
 
   if (isTransLoading || isEventsLoading) {
     return <div>Loading...</div>; // Add a loading indicator

@@ -102,7 +102,8 @@ const FormTransNew = () => {
     
             try {
                 const uploadResponse = await axios.post(
-                    "https://localhost:8000/api/files/images", // Ensure this is the correct API endpoint
+                    //"https://localhost:8000/api/files/images", 
+                    "/api/files/images", 
                     imageFormData,
                     { headers: { "Content-Type": "multipart/form-data" } }
                 );
@@ -123,7 +124,8 @@ const FormTransNew = () => {
                 
                 try {
                     const trackUploadResponse = await axios.post(
-                        "https://localhost:8000/api/files/tracks", // Ensure this is the correct API endpoint for MP3 files
+                        //"https://localhost:8000/api/files/tracks", 
+                        "/api/files/tracks", 
                         trackFormData,
                         { headers: { "Content-Type": "multipart/form-data" } }
                     );
@@ -144,7 +146,8 @@ const FormTransNew = () => {
 
                 try {
                     const trackImageUploadResponse = await axios.post(
-                        "https://localhost:8000/api/files/images",
+                        //"https://localhost:8000/api/files/images",
+                        "/api/files/images",
                         trackImageFormData,
                         { headers: { "Content-Type": "multipart/form-data" } }
                     )
@@ -169,7 +172,8 @@ const FormTransNew = () => {
     
         try {
             const transResponse = await axios.post(
-                "https://localhost:8000/api/transmissions/",
+                //"https://localhost:8000/api/transmissions/",
+                "/api/transmissions/",
                 requestTransData,
                 { headers: { "Content-Type": "application/json" } }
             )
@@ -192,7 +196,8 @@ const FormTransNew = () => {
                 };
     
                 await axios.post(
-                    "https://localhost:8000/api/tracks/",
+                    //"https://localhost:8000/api/tracks/",
+                    "/api/tracks/",
                     requestTracksData,
                     { headers: { "Content-Type": "application/json" } }
                 );

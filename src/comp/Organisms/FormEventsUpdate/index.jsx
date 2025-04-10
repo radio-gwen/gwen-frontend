@@ -20,7 +20,8 @@ const FormEventsUpdate = ({event}) => {
     const [existingTracks, setExistingTracks] = useState([]);  // Holds tracks from API
     const [newTracks, setNewTracks] = useState([]);  // Holds newly added tracks
     const [message, setMessage] = useState('')
-    const baseUrl = "https://127.0.0.1:8000/api/files/images?file_name="
+    //const baseUrl = "https://127.0.0.1:8000/api/files/images?file_name="
+    const baseUrl = "/api/files/images?file_name="
     const [image, setImage] = useState(null)
     const [imagePreview, setImagePreview] = useState(
         event?.event_img ? `${baseUrl}${event.event_img}` : defaultImage
@@ -45,7 +46,8 @@ const FormEventsUpdate = ({event}) => {
         const fetchTracks = async () => {
             try {
                 const response = await axios.get(
-                    `https://localhost:8000/api/tracks/?event_id=${event.id_old}`
+                    //`https://localhost:8000/api/tracks/?event_id=${event.id_old}`
+                    `/api/tracks/?event_id=${event.id_old}`
                 );
                 const filteredTracks = response.data.filter(
                     (track) => track.transmission_id === event.id_old &&
@@ -138,7 +140,8 @@ const FormEventsUpdate = ({event}) => {
 
             try {
                 const uploadResponse = await axios.post(
-                    "https://localhost:8000/api/files/images", // Ensure this is the correct API endpoint
+                    //"https://localhost:8000/api/files/images", // Ensure this is the correct API endpoint
+                    "/api/files/images", // Ensure this is the correct API endpoint
                     imageFormData,
                     { headers: { "Content-Type": "multipart/form-data" } }
                 );
@@ -159,7 +162,8 @@ const FormEventsUpdate = ({event}) => {
                 
                 try {
                     const trackUploadResponse = await axios.post(
-                        "https://localhost:8000/api/files/tracks", // Ensure this is the correct API endpoint for MP3 files
+                        //"https://localhost:8000/api/files/tracks", // Ensure this is the correct API endpoint for MP3 files
+                        "/api/files/tracks", // Ensure this is the correct API endpoint for MP3 files
                         trackFormData,
                         { headers: { "Content-Type": "multipart/form-data" } }
                     );
@@ -186,7 +190,8 @@ const FormEventsUpdate = ({event}) => {
     
         try {
             // Update the event
-            await axios.put(`https://localhost:8000/api/events/${event.id_old}`, requestData, {
+            //await axios.put(`https://localhost:8000/api/events/${event.id_old}`, requestData, {
+            await axios.put(`/api/events/${event.id_old}`, requestData, {
                 headers: { "Content-Type": "application/json" },
             })
     
@@ -201,7 +206,8 @@ const FormEventsUpdate = ({event}) => {
             
                     try {
                         const trackUploadResponse = await axios.post(
-                            "https://localhost:8000/api/files/tracks",
+                            //"https://localhost:8000/api/files/tracks",
+                            "/api/files/tracks",
                             trackFormData,
                             { headers: { "Content-Type": "multipart/form-data" } }
                         );
@@ -214,7 +220,8 @@ const FormEventsUpdate = ({event}) => {
                 }
             
                 // Now update the track with the new file path
-                return axios.put(`https://localhost:8000/api/tracks/${track.id}`, 
+                //return axios.put(`https://localhost:8000/api/tracks/${track.id}`,
+                return axios.put(`/api/tracks/${track.id}`, 
                     {
                         ...track,
                         tracks_track: uploadedTrackPath, // Ensure the file path is updated
@@ -225,7 +232,8 @@ const FormEventsUpdate = ({event}) => {
     
             // Create new tracks (POST requests)
             const createPromises = newTracks.map((track, index) =>
-                axios.post(`https://localhost:8000/api/tracks/`, 
+                //axios.post(`https://localhost:8000/api/tracks/`, 
+                axios.post(`/api/tracks/`, 
                     {
                         ...track,
                         tracks_track: uploadedNewTrackPaths[index] || ""  // Assign the uploaded track path
